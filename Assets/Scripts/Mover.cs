@@ -18,12 +18,14 @@ namespace DefaultNamespace
 
         public OctreeGenerator octreeGenerator;
         private Graph graph;
+        
         [SerializeField] private int _pathLength;
 
         private void Start()
         {
             graph = octreeGenerator.waypoints;
             currentNode = GetClosestNode(transform.position);
+            
             GetRandomDestination();
         }
 
@@ -93,7 +95,7 @@ namespace DefaultNamespace
             _pathLength = currentWaypoint;
         }
 
-        private void OnDrawGizmos()
+        /*private void OnDrawGizmos()
         {
             if (graph == null || graph.GetPathLength() == 0) return;
 
@@ -114,6 +116,6 @@ namespace DefaultNamespace
                     Gizmos.DrawLine(start, end);
                 }
             }
-        }
+        }*/
     }
 }

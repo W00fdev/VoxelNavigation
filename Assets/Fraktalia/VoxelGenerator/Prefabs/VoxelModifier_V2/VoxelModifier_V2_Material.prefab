@@ -1,0 +1,493 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7394931838732844837
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7394931838732845019}
+  - component: {fileID: 7394931838732845018}
+  - component: {fileID: 7394931838732844839}
+  m_Layer: 0
+  m_Name: VoxelModifier_V2_Material
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7394931838732845019
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394931838732844837}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7394931838732845018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394931838732844837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c56dda55af2bf4cbae2ae1d889f82e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetDimension: 1
+  Depth: 6
+  Mode: 2
+  Opacity: 1
+  TargetingModule:
+    TargetingType: 1
+    _targetModule:
+      rid: 1836565222084837569
+    _targetDefault:
+      rid: 1836565222084837568
+    _targetSphereCast:
+      rid: 1836565222084837569
+  ShapeModule:
+    ShapeType: 0
+    _shape:
+      rid: 1836565222084837571
+    _shapeSphere:
+      rid: 1836565222084837571
+    _shapeBox:
+      rid: 1836565222084837572
+    _shapeEllipsoid:
+      rid: 1836565222084837573
+  PostProcessModule:
+  - ProcessType: 1
+    Disabled: 0
+    _postprocess:
+      rid: 1836565222084837576
+    _none:
+      rid: 1836565222084837575
+    _between:
+      rid: 1836565222084837576
+    _copypaste:
+      rid: 1836565222084837577
+    _hardness:
+      rid: 1836565222084837578
+    _indestructible:
+      rid: 1836565222084837579
+    _shapefill:
+      rid: 1836565222084837580
+    _threshold:
+      rid: 1836565222084837581
+    _destruction:
+      rid: 1836565222084837582
+    _solidpaint:
+      rid: 1836565222084837583
+  RequireVoxelData: 1
+  MarchingCubesOffset: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 1836565222084837568
+      type: {class: VoxelModifier_Target, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        AlwaysModify: []
+        NeverModify: []
+    - rid: 1836565222084837569
+      type: {class: VoxelModifier_TargetSphereCast, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        AlwaysModify: []
+        NeverModify: []
+        SphereCastLayer:
+          serializedVersion: 2
+          m_Bits: 4294967295
+        Maximum: 3
+        Radius: 10
+        lastReference: {fileID: 0}
+    - rid: 1836565222084837571
+      type: {class: VoxelShape_Sphere, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 1
+        InitialID: 255
+        Radius: 5
+    - rid: 1836565222084837572
+      type: {class: VoxelShape_Box, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 1
+        Rotation: {x: 0, y: 0, z: 0}
+        InitialID: 255
+        Bounds: {x: 10, y: 10, z: 10}
+        Radials: 0
+    - rid: 1836565222084837573
+      type: {class: VoxelShape_Ellipsoid, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 1
+        Rotation: {x: 0, y: 0, z: 0}
+        InitialID: 255
+        Bounds: {x: 10, y: 10, z: 10}
+    - rid: 1836565222084837575
+      type: {class: VM_PostProcess, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+    - rid: 1836565222084837576
+      type: {class: VM_PostProcess_Between, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        MinimumID: 0
+        MaximumID: 54
+    - rid: 1836565222084837577
+      type: {class: VM_PostProcess_CopyPaste, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        TargetGenerator: {fileID: 0}
+        CopyDimension: 0
+        _copyInformation: 0
+    - rid: 1836565222084837578
+      type: {class: VM_PostProcess_Hardness, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        HardnessDimension: 1
+        NoNegatives: 0
+        NoGreaterOne: 0
+        Histogramm:
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        HistogrammCurve:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        _applyHistogrammFromCurve: 0
+        MinID: 0
+        MaxID: 0
+        MinMaxHardness: 0
+        _applyHistogrammFromMinMax: 0
+    - rid: 1836565222084837579
+      type: {class: VM_PostProcess_Indestructible, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        DensityDimension: 0
+        ShapeDefiningDimension: 1
+        Inverted: 0
+    - rid: 1836565222084837580
+      type: {class: VM_PostProcess_ShapeFill, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        DensityDimension: 0
+        ShapeDefiningDimension: 1
+        Inverted: 0
+    - rid: 1836565222084837581
+      type: {class: VM_PostProcess_Threshold, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        Threshold: 0
+        LeftID: 255
+        RightID: 255
+        DiscardLeft: 0
+        DiscardRight: 0
+    - rid: 1836565222084837582
+      type: {class: VM_PostProcess_Destruction, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        DestructionPrefab: {fileID: 0}
+        MinimumMaterialID: 128
+        RequiredSpawnMaterial: 1000
+        RemovedMaterial: 0
+        Attachments: []
+    - rid: 1836565222084837583
+      type: {class: VM_PostProcess_SolidPaint, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        Threshold: 0
+        LeftID: 255
+        DiscardLeft: 0
+--- !u!114 &7394931838732844839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394931838732844837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ec23c6d9fe654247a4277ecec13c113, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Modifier: {fileID: 7394931838732845018}
+  AdditionalModifiers: []
+  Active: 1
+  GameCamera: {fileID: 0}
+  ImpactIndicator: {fileID: 0}
+  TargetLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  MaximumDistance: 0
+  ActivationButton: 306
+  ReliefPainting: 0
+  Paint2D: 0
+  PaintPlaneXY: 1
+  PaintPlaneXZ: 0
+  PaintPlaneYZ: 0
+  PaintPlaneOffset: 0
+  PaintPlaneSize: 1000
+  PaintPlaneColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 0.21176471}
+  PaintPosition: {x: -1.9430504, y: 4.782323, z: -7.4160995}
+  ModeLeftClick: 1
+  ModeRightClick: 2
+  ModeMiddletClick: 3
+  PaintNormal: {x: -0.07363898, y: 0.8994667, z: -0.43073997}

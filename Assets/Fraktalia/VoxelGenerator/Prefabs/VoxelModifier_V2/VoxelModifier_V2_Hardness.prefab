@@ -1,0 +1,539 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8665163741041026824
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8665163741041026837}
+  - component: {fileID: 8665163741041026826}
+  - component: {fileID: 8665163741041026839}
+  m_Layer: 0
+  m_Name: VoxelModifier_V2_Hardness
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8665163741041026837
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8665163741041026824}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8665163741041026826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8665163741041026824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c56dda55af2bf4cbae2ae1d889f82e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetDimension: 0
+  Depth: 6
+  Mode: 2
+  Opacity: 0.085
+  TargetingModule:
+    TargetingType: 1
+    _targetModule:
+      rid: 1836565222084837531
+    _targetDefault:
+      rid: 1836565222084837530
+    _targetSphereCast:
+      rid: 1836565222084837531
+  ShapeModule:
+    ShapeType: 0
+    _shape:
+      rid: 1836565222084837533
+    _shapeSphere:
+      rid: 1836565222084837533
+    _shapeBox:
+      rid: 1836565222084837534
+    _shapeEllipsoid:
+      rid: 1836565222084837535
+  PostProcessModule:
+  - ProcessType: 3
+    Disabled: 0
+    _postprocess:
+      rid: 1836565222084837540
+    _none:
+      rid: 1836565222084837537
+    _between:
+      rid: 1836565222084837538
+    _copypaste:
+      rid: 1836565222084837539
+    _hardness:
+      rid: 1836565222084837540
+    _indestructible:
+      rid: 1836565222084837541
+    _shapefill:
+      rid: 1836565222084837542
+    _threshold:
+      rid: 1836565222084837543
+    _destruction:
+      rid: 1836565222084837544
+    _solidpaint:
+      rid: 1836565222084837545
+  RequireVoxelData: 0
+  MarchingCubesOffset: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 1836565222084837530
+      type: {class: VoxelModifier_Target, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        AlwaysModify: []
+        NeverModify: []
+    - rid: 1836565222084837531
+      type: {class: VoxelModifier_TargetSphereCast, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        AlwaysModify:
+        - {fileID: 0}
+        NeverModify: []
+        SphereCastLayer:
+          serializedVersion: 2
+          m_Bits: 2147483647
+        Maximum: 3
+        Radius: 10
+        lastReference: {fileID: 0}
+    - rid: 1836565222084837533
+      type: {class: VoxelShape_Sphere, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 1
+        InitialID: 255
+        Radius: 5
+    - rid: 1836565222084837534
+      type: {class: VoxelShape_Box, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 1
+        Rotation: {x: 0, y: 0, z: 0}
+        InitialID: 255
+        Bounds: {x: 10, y: 10, z: 10}
+        Radials: 0
+    - rid: 1836565222084837535
+      type: {class: VoxelShape_Ellipsoid, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 1
+        Rotation: {x: 0, y: 0, z: 0}
+        InitialID: 255
+        Bounds: {x: 10, y: 10, z: 10}
+    - rid: 1836565222084837537
+      type: {class: VM_PostProcess, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+    - rid: 1836565222084837538
+      type: {class: VM_PostProcess_Between, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        MinimumID: 0
+        MaximumID: 255
+    - rid: 1836565222084837539
+      type: {class: VM_PostProcess_CopyPaste, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        TargetGenerator: {fileID: 0}
+        CopyDimension: 0
+        _copyInformation: 0
+    - rid: 1836565222084837540
+      type: {class: VM_PostProcess_Hardness, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        HardnessDimension: 1
+        NoNegatives: 1
+        NoGreaterOne: 1
+        Histogramm:
+        - 0
+        - 0.0011137942
+        - 0.0022223052
+        - 0.003325715
+        - 0.0044242055
+        - 0.0055179587
+        - 0.0066071567
+        - 0.0076919813
+        - 0.008772614
+        - 0.009849237
+        - 0.010922033
+        - 0.011991182
+        - 0.013056869
+        - 0.014119274
+        - 0.015178578
+        - 0.016234964
+        - 0.017288616
+        - 0.018339712
+        - 0.019388435
+        - 0.02043497
+        - 0.021479495
+        - 0.022522194
+        - 0.02356325
+        - 0.024602843
+        - 0.025641154
+        - 0.02667837
+        - 0.027714668
+        - 0.028750228
+        - 0.029785238
+        - 0.030819878
+        - 0.031854328
+        - 0.03288877
+        - 0.033923388
+        - 0.034958363
+        - 0.035993878
+        - 0.037030112
+        - 0.038067248
+        - 0.039105467
+        - 0.040144958
+        - 0.041185897
+        - 0.042228468
+        - 0.04327284
+        - 0.044319216
+        - 0.04536777
+        - 0.046418678
+        - 0.04747213
+        - 0.0485283
+        - 0.049587376
+        - 0.05064953
+        - 0.051714964
+        - 0.052783843
+        - 0.053856358
+        - 0.05493268
+        - 0.056013
+        - 0.057097502
+        - 0.05818636
+        - 0.059279755
+        - 0.060377877
+        - 0.061480906
+        - 0.06258902
+        - 0.063702404
+        - 0.064821236
+        - 0.06594571
+        - 0.067076
+        - 0.06821228
+        - 0.069354735
+        - 0.070503555
+        - 0.07165892
+        - 0.07282101
+        - 0.07399
+        - 0.075166084
+        - 0.076349445
+        - 0.07754025
+        - 0.07873869
+        - 0.079944946
+        - 0.081159204
+        - 0.082381636
+        - 0.083612435
+        - 0.08485178
+        - 0.08609985
+        - 0.08735683
+        - 0.08862289
+        - 0.08989823
+        - 0.09118303
+        - 0.09247745
+        - 0.0937817
+        - 0.09509594
+        - 0.09642037
+        - 0.097755164
+        - 0.09910049
+        - 0.10045655
+        - 0.10179322
+        - 0.103064746
+        - 0.10427181
+        - 0.105415605
+        - 0.10649733
+        - 0.10751817
+        - 0.1084793
+        - 0.10938192
+        - 0.11022722
+        - 0.11101638
+        - 0.111750595
+        - 0.11243105
+        - 0.11305894
+        - 0.113635436
+        - 0.11416175
+        - 0.11463905
+        - 0.11506854
+        - 0.115451396
+        - 0.11578881
+        - 0.116081975
+        - 0.11633208
+        - 0.1165403
+        - 0.11670784
+        - 0.11683588
+        - 0.1169256
+        - 0.116978206
+        - 0.11699487
+        - 0.1169768
+        - 0.116925165
+        - 0.11684116
+        - 0.11672598
+        - 0.1165808
+        - 0.11640682
+        - 0.11620522
+        - 0.1159772
+        - 0.11572394
+        - 0.11544662
+        - 0.11514644
+        - 0.114824586
+        - 0.114482254
+        - 0.11412061
+        - 0.11374087
+        - 0.1133442
+        - 0.1129318
+        - 0.112504855
+        - 0.112064555
+        - 0.11161209
+        - 0.11114864
+        - 0.110675395
+        - 0.11019356
+        - 0.1097043
+        - 0.10920882
+        - 0.10860262
+        - 0.10764921
+        - 0.10635886
+        - 0.10475238
+        - 0.10285051
+        - 0.10067403
+        - 0.09824372
+        - 0.09558034
+        - 0.09270467
+        - 0.089637466
+        - 0.08639951
+        - 0.08301158
+        - 0.07949443
+        - 0.07586884
+        - 0.07215558
+        - 0.06837541
+        - 0.064549126
+        - 0.060697474
+        - 0.056841247
+        - 0.05300119
+        - 0.049198095
+        - 0.04545272
+        - 0.041785844
+        - 0.038218237
+        - 0.034770668
+        - 0.031463906
+        - 0.028318726
+        - 0.02535589
+        - 0.022596173
+        - 0.02006036
+        - 0.017769195
+        - 0.01574348
+        - 0.014003955
+        - 0.012571409
+        - 0.011466615
+        - 0.010710336
+        - 0.010323353
+        - 0.010326408
+        - 0.01074031
+        - 0.011585794
+        - 0.0128836855
+        - 0.014654696
+        - 0.016919605
+        - 0.019699223
+        - 0.02301427
+        - 0.02688557
+        - 0.03133384
+        - 0.036379904
+        - 0.04204447
+        - 0.048348386
+        - 0.05527898
+        - 0.06271855
+        - 0.070644125
+        - 0.07904378
+        - 0.08790562
+        - 0.097217724
+        - 0.106968164
+        - 0.11714504
+        - 0.12773643
+        - 0.13873044
+        - 0.15011512
+        - 0.16187859
+        - 0.17400888
+        - 0.18649416
+        - 0.19932243
+        - 0.21248184
+        - 0.22596045
+        - 0.23974635
+        - 0.25382763
+        - 0.26819232
+        - 0.28282857
+        - 0.2977245
+        - 0.3128681
+        - 0.3282475
+        - 0.34385076
+        - 0.35966605
+        - 0.37568134
+        - 0.3918848
+        - 0.40826446
+        - 0.42480847
+        - 0.44150487
+        - 0.45834172
+        - 0.47530717
+        - 0.49238926
+        - 0.5095761
+        - 0.5268557
+        - 0.5442163
+        - 0.56164587
+        - 0.57913256
+        - 0.5966643
+        - 0.6142294
+        - 0.6318158
+        - 0.6494116
+        - 0.66700494
+        - 0.68458384
+        - 0.70213646
+        - 0.7196508
+        - 0.737115
+        - 0.75451714
+        - 0.77184534
+        - 0.7890876
+        - 0.8062321
+        - 0.82326686
+        - 0.84018
+        - 0.85695946
+        - 0.8735936
+        - 0.8900703
+        - 0.90637773
+        - 0.92250395
+        - 0.938437
+        - 0.95416504
+        - 0.96967614
+        - 0.98495835
+        HistogrammCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0.28582308
+            outSlope: 0.28582308
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.35200956
+            value: 0.10061246
+            inSlope: 0.34886086
+            outSlope: 0.34886086
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.27661473
+          - serializedVersion: 3
+            time: 0.5556164
+            value: 0.10909021
+            inSlope: -0.12783748
+            outSlope: -0.12783748
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.7514554
+            value: 0.050864756
+            inSlope: 1.76073
+            outSlope: 1.76073
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 3.8187728
+            outSlope: 3.8187728
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        _applyHistogrammFromCurve: 0
+        MinID: 0
+        MaxID: 255
+        MinMaxHardness: 0
+        _applyHistogrammFromMinMax: 0
+    - rid: 1836565222084837541
+      type: {class: VM_PostProcess_Indestructible, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        DensityDimension: 0
+        ShapeDefiningDimension: 1
+        Inverted: 0
+    - rid: 1836565222084837542
+      type: {class: VM_PostProcess_ShapeFill, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        DensityDimension: 0
+        ShapeDefiningDimension: 1
+        Inverted: 0
+    - rid: 1836565222084837543
+      type: {class: VM_PostProcess_Threshold, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        Threshold: 0
+        LeftID: 255
+        RightID: 255
+        DiscardLeft: 0
+        DiscardRight: 0
+    - rid: 1836565222084837544
+      type: {class: VM_PostProcess_Destruction, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        DestructionPrefab: {fileID: 0}
+        MinimumMaterialID: 128
+        RequiredSpawnMaterial: 1000
+        RemovedMaterial: 0
+        Attachments: []
+    - rid: 1836565222084837545
+      type: {class: VM_PostProcess_SolidPaint, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        Threshold: 0
+        LeftID: 255
+        DiscardLeft: 0
+--- !u!114 &8665163741041026839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8665163741041026824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ec23c6d9fe654247a4277ecec13c113, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Modifier: {fileID: 8665163741041026826}
+  AdditionalModifiers: []
+  Active: 1
+  GameCamera: {fileID: 0}
+  ImpactIndicator: {fileID: 0}
+  TargetLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  MaximumDistance: 20000
+  ActivationButton: 0
+  ReliefPainting: 0
+  Paint2D: 0
+  PaintPlaneXY: 1
+  PaintPlaneXZ: 0
+  PaintPlaneYZ: 0
+  PaintPlaneOffset: 0
+  PaintPlaneSize: 1000
+  PaintPlaneColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 0.21176471}
+  PaintPosition: {x: 2.3178558, y: 0.5, z: 15.466191}
+  ModeLeftClick: 1
+  ModeRightClick: 2
+  ModeMiddletClick: 3
+  PaintNormal: {x: 0, y: 0, z: 0}

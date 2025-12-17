@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3e4a32a7d00c3e4fb93972961622508, type: 3}
+  m_Name: TextureArray_BaseTemplate
+  m_EditorClassIdentifier: 
+  Materials:
+  - {fileID: 2100000, guid: 94fc042e2c1e1b240bcaa64386d4d92c, type: 2}
+  - {fileID: 2100000, guid: e89c123a12d03ee4181a228344c401af, type: 2}
+  - {fileID: 2100000, guid: ae62d6d0d24cefc479de0016bbd283b1, type: 2}
+  - {fileID: 2100000, guid: 0022940e50633bc438e09af55b5595b8, type: 2}
+  - {fileID: 2100000, guid: 209819404bdba7a43b8859099647a855, type: 2}
+  - {fileID: 2100000, guid: ec6f9b1206e7a434e988ed9d5cdfa32e, type: 2}
+  - {fileID: 2100000, guid: 08543c1ad54e4e24ba803a1ef4bf7dc2, type: 2}
+  - {fileID: 2100000, guid: a8596cd4dd93a424686edda5013440fa, type: 2}
+  WhiteDefaultTexture: {fileID: 2800000, guid: bebe64da80303a54c90e6cd4c6180278, type: 3}
+  BlackDefaultTexture: {fileID: 2800000, guid: db14eddd3a099074290f4b30f93d20e2, type: 3}
+  NormalDefaultTexture: {fileID: 2800000, guid: ac74305da033e134cb22df6a06f1f128, type: 3}
+  HeightDefaultTexture: {fileID: 2800000, guid: 23e56e2d425f449409b5d780c8ae2817, type: 3}
+  OcclusionTextures:
+  - {fileID: 2800000, guid: 08a41c57225a37a4098a2bd436f80127, type: 3}
+  - {fileID: 2800000, guid: 77959095c64b725458bf79c45dddac59, type: 3}
+  - {fileID: 2800000, guid: 4e53ba52a280d0e46849a013537252b3, type: 3}
+  - {fileID: 2800000, guid: bebe64da80303a54c90e6cd4c6180278, type: 3}
+  - {fileID: 2800000, guid: 7631de96bf7bd77498a1cb25b7294a74, type: 3}
+  - {fileID: 2800000, guid: 93fea8b25ccbd38458b14b712acbeb51, type: 3}
+  - {fileID: 2800000, guid: bebe64da80303a54c90e6cd4c6180278, type: 3}
+  - {fileID: 2800000, guid: bebe64da80303a54c90e6cd4c6180278, type: 3}
+  DiffuseTextures:
+  - {fileID: 2800000, guid: 9e8b3cb67e6ed664e9ada6400a846585, type: 3}
+  - {fileID: 2800000, guid: ca6bd546a050f974481964c8872b723a, type: 3}
+  - {fileID: 2800000, guid: ec7e9a9bb49a62f4c86f67b0cee70246, type: 3}
+  - {fileID: 2800000, guid: 0bc4d217a7e5c354bbabd09b1f9fd94b, type: 3}
+  - {fileID: 2800000, guid: 7c7d64180683db043aec92cffd798b74, type: 3}
+  - {fileID: 2800000, guid: eda92711342d8dc46882b800739822b6, type: 3}
+  - {fileID: 2800000, guid: 4f473c609f815dc448e872f9099e1846, type: 3}
+  - {fileID: 2800000, guid: 29c1bc228ff06f744bfe8b5753d54e35, type: 3}
+  EmmissiveTextures:
+  - {fileID: 2800000, guid: db14eddd3a099074290f4b30f93d20e2, type: 3}
+  - {fileID: 2800000, guid: db14eddd3a099074290f4b30f93d20e2, type: 3}
+  - {fileID: 2800000, guid: db14eddd3a099074290f4b30f93d20e2, type: 3}
+  - {fileID: 2800000, guid: db14eddd3a099074290f4b30f93d20e2, type: 3}
+  - {fileID: 2800000, guid: db14eddd3a099074290f4b30f93d20e2, type: 3}
+  - {fileID: 2800000, guid: db14eddd3a099074290f4b30f93d20e2, type: 3}
+  - {fileID: 2800000, guid: 3c7ec8bc180fdc040a79a774f9156c79, type: 3}
+  - {fileID: 2800000, guid: 579bfbe9bbaf7164a829411c2c5e2fd5, type: 3}
+  HeightTextures:
+  - {fileID: 2800000, guid: 46aa6bce724cf484d806db5b000c5f6f, type: 3}
+  - {fileID: 2800000, guid: d6520c218c9334749bb8533340b94683, type: 3}
+  - {fileID: 2800000, guid: 37279e2dd45359b48b9847edd0cfe04e, type: 3}
+  - {fileID: 2800000, guid: 142491d7904c9044ba4fa5524b450f63, type: 3}
+  - {fileID: 2800000, guid: 3ae22d5ecf2dc744080576cbd75d23fe, type: 3}
+  - {fileID: 2800000, guid: ea1100a422ef1d747b5da56147587a46, type: 3}
+  - {fileID: 2800000, guid: 0c2d004f5e57201458c0fdd2fa350ad5, type: 3}
+  - {fileID: 2800000, guid: 9e63c1fae689d3649b62bd20e2077a35, type: 3}
+  MetallicTextures:
+  - {fileID: 2800000, guid: bebe64da80303a54c90e6cd4c6180278, type: 3}
+  - {fileID: 2800000, guid: 41d64bce59817334d801859363af7c43, type: 3}
+  - {fileID: 2800000, guid: bebe64da80303a54c90e6cd4c6180278, type: 3}
+  - {fileID: 2800000, guid: 95e3b8526be347942bf617a1158cb64e, type: 3}
+  - {fileID: 2800000, guid: 7348dade825f7954ea54a949a8b59ae2, type: 3}
+  - {fileID: 2800000, guid: 53f2e7e8eb400d442a1b1de93ff0ed8a, type: 3}
+  - {fileID: 2800000, guid: bebe64da80303a54c90e6cd4c6180278, type: 3}
+  - {fileID: 2800000, guid: bebe64da80303a54c90e6cd4c6180278, type: 3}
+  NormalTextures:
+  - {fileID: 2800000, guid: c81c8a2fed3d14241a19be2d99f2170b, type: 3}
+  - {fileID: 2800000, guid: edd74c9397601ad41b4f339d4b380a68, type: 3}
+  - {fileID: 2800000, guid: ef7fd080395f1bd4aa3ef5edf8262d9a, type: 3}
+  - {fileID: 2800000, guid: b28e31b7b0899e94389125534c8c31eb, type: 3}
+  - {fileID: 2800000, guid: 9a57adc7c40e53344906f9b57fc84121, type: 3}
+  - {fileID: 2800000, guid: 6f17a0f3b2b8bca47b82415c98ab604b, type: 3}
+  - {fileID: 2800000, guid: a3000ea9e9718884eb1ba52a591b981f, type: 3}
+  - {fileID: 2800000, guid: b7c8cc3231f2f4f4aa3c60a7752e676e, type: 3}
+  BaseTextureMultiplier:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  MetallicMultiplier:
+  - {r: 0, g: 0, b: 0, a: 0.853}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  EmissionMultiplier:
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  SmoothnessTextureSource: 0000000000000000010000000000000000000000000000000100000001000000
+  OutputPath: Assets\Fraktalia\0_Core\Rendering\MultiMaterial\Materials\Terrain\TextureArray
+  FinalName: GenericTerrain
+  TargetMaterial: {fileID: 0}
+  UseMaterialPath: 0

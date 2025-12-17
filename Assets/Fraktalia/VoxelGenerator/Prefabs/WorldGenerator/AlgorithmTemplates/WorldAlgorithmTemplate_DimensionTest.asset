@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ab7b1c63f895248b4a828edc34948a, type: 3}
+  m_Name: WorldAlgorithmTemplate_DimensionTest
+  m_EditorClassIdentifier: 
+  WorldAlgorithmContainer: {fileID: 7265191688100744678, guid: 334679a244647474d9d619a8a5f85bea, type: 3}

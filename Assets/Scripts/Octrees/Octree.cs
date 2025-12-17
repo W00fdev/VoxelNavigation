@@ -15,8 +15,9 @@ namespace Octrees
         {
             this.graph = graph;
 
-            CalculateBounds(worldObjects);
-            CreateTree(worldObjects, minNodeSize);
+            // too much calculations
+            //CalculateBounds(worldObjects);
+            //CreateTree(worldObjects, minNodeSize);
 
             GetEmptyLeaves(root);
             GetEdges();
@@ -82,6 +83,8 @@ namespace Octrees
 
             Vector3 size = Vector3.one * Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z) * 0.6f;
             bounds.SetMinMax(bounds.center - size, bounds.center + size);
+
+            UnityEngine.Debug.Log($"#{Time.frameCount}: bounds: {bounds.center} + size: {bounds.size}");
         }
     }
 }

@@ -76,8 +76,8 @@ namespace Octrees
 
         public void DrawNode()
         {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(bounds.center, bounds.size * 1f);
+            /*Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(bounds.center, bounds.size * 1f);*/
 
             foreach (OctreeObject octreeObject in objects)
             {

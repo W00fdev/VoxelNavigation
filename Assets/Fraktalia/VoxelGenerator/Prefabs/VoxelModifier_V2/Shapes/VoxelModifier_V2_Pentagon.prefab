@@ -1,0 +1,192 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &276844102826922196
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8577007158326521583}
+  - component: {fileID: 965048093140664647}
+  - component: {fileID: 3409787013386918410}
+  m_Layer: 0
+  m_Name: VoxelModifier_V2_Pentagon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8577007158326521583
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276844102826922196}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -21.7, y: 0, z: 21.700005}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &965048093140664647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276844102826922196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c56dda55af2bf4cbae2ae1d889f82e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetDimension: 0
+  _dimensionDefinitions: {fileID: 0}
+  Depth: 7
+  Mode: 0
+  Opacity: 1
+  ShapeScale: 1
+  TargetingModule:
+    AlwaysModify:
+    - {fileID: 0}
+    NeverModify: []
+    TargetingType: 0
+    _targetModule:
+      rid: 1836565222084837804
+    _targetDefault:
+      rid: 1836565222084837804
+    _targetSphereCast:
+      rid: 1836565222084837805
+  ShapeModule:
+    ShapeType: 5
+    _shape:
+      rid: 503421537200635937
+    _shapeSphere:
+      rid: 1836565222084837807
+    _shapeBox:
+      rid: 1836565222084837808
+    _shapeEllipsoid:
+      rid: 1836565222084837809
+    _shapeSingle:
+      rid: 503421537200635935
+    _shapeDiamond:
+      rid: 503421537200635936
+    _shapePolygon:
+      rid: 503421537200635937
+  PostProcessModule: []
+  PostProcessModuleBehaviors: []
+  RequireVoxelData: 0
+  MarchingCubesOffset: 1
+  ProcessingSpeed: 5
+  CleanModificationsOnly: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 503421537200635935
+      type: {class: VoxelShape_Single, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 1
+        InitialID: 255
+    - rid: 503421537200635936
+      type: {class: VoxelShape_Diamond, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 1
+        Rotation: {x: 0, y: 0, z: 0}
+        InitialID: 500
+        Bounds: {x: 5, y: 5, z: 5}
+        Roundness: 0
+    - rid: 503421537200635937
+      type: {class: VoxelShape_Polygon, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 1
+        Rotation: {x: 90, y: 0, z: 0}
+        InitialID: 1000
+        Bounds: {x: 20, y: 20, z: 20}
+        Radius: 9.16
+        AxisMultiplier: {x: 20, y: 20, z: 0.15}
+        Edges: 5
+        EdgeStep: 0
+        EdgeBevel: 0
+        RoundBevel: 1
+        ZThickness: 0.4
+        RotationOffset: 0
+    - rid: 1836565222084837804
+      type: {class: VoxelModifier_Target, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+    - rid: 1836565222084837805
+      type: {class: VoxelModifier_TargetSphereCast, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        SphereCastLayer:
+          serializedVersion: 2
+          m_Bits: 2147483647
+        Maximum: 3
+        Radius: 10
+    - rid: 1836565222084837807
+      type: {class: VoxelShape_Sphere, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 1
+        InitialID: 255
+        Radius: 0
+    - rid: 1836565222084837808
+      type: {class: VoxelShape_Box, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 10
+        Rotation: {x: 0, y: 0, z: 0}
+        InitialID: 255
+        Bounds: {x: 15, y: 15, z: 15}
+        Radials: {x: 4, y: 4, z: 4}
+    - rid: 1836565222084837809
+      type: {class: VoxelShape_Ellipsoid, ns: Fraktalia.VoxelGen.Modify, asm: Internal}
+      data:
+        ApplyObjectRotation: 0
+        boundaryExtension: 1
+        Rotation: {x: 0, y: 0, z: 0}
+        InitialID: 255
+        Bounds: {x: 10, y: 10, z: 10}
+--- !u!114 &3409787013386918410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276844102826922196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ec23c6d9fe654247a4277ecec13c113, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Modifier: {fileID: 965048093140664647}
+  AdditionalModifiers: []
+  Active: 1
+  GameCamera: {fileID: 0}
+  ImpactIndicator: {fileID: 0}
+  TargetLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  MaximumDistance: 0
+  ActivationButton: 306
+  ReliefPainting: 0
+  Paint2D: 0
+  PaintPlaneXY: 1
+  PaintPlaneXZ: 0
+  PaintPlaneYZ: 0
+  PaintPlaneOffset: 0
+  PaintPlaneSize: 1000
+  PaintPlaneColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 0.21176471}
+  PaintPosition: {x: 44.539528, y: -68.8013, z: 64}
+  PaintNormal: {x: 0, y: 0, z: 1}
+  ModeLeftClick: 1
+  ModeRightClick: 2
+  ModeMiddleClick: 3
+  NormalOffset_Left: 0
+  NormalOffset_Right: 0
+  NormalOffset_Middle: 0

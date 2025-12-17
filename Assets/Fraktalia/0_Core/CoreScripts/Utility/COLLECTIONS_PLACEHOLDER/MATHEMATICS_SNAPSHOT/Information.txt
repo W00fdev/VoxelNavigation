@@ -1,0 +1,6 @@
+Snapshot of Unity.Mathematics v 1.2.6!
+
+Why is this here:
+
+1. For users which do not know how to install mathematics from package manager! So Asset works even if the user does not have mathematics.
+2. Prevent any incompatibilities due to updates by Unity breaking stuff related to mathematics.
