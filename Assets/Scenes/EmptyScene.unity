@@ -119,6 +119,53 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &253985164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 253985166}
+  - component: {fileID: 253985165}
+  m_Layer: 0
+  m_Name: MapDrawer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &253985165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253985164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1e47c18e56449fb8c4d911dec2e71aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voxelMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  VoxelMaterial: {fileID: 2100000, guid: 00f75f3f24ca75b4583df482d668c20f, type: 2}
+  _shadowCastingMode: 0
+--- !u!4 &253985166
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253985164}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 298.23843, y: -23.625084, z: 108.68888}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &501436735
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,8 +252,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 501436735}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.22218746, y: 0.15269217, z: -0.03303654, w: 0.9624066}
-  m_LocalPosition: {x: 80.573074, y: 109.4989, z: 8.144424}
+  m_LocalRotation: {x: -0.2129207, y: -0.0071169576, z: -0.00079007656, w: -0.9770433}
+  m_LocalPosition: {x: -192.90514, y: 134.70877, z: -84.42762}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -266,7 +313,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1366937368}
   - component: {fileID: 1366937369}
-  - component: {fileID: 1366937370}
   m_Layer: 0
   m_Name: 3DMapReader
   m_TagString: Untagged
@@ -301,21 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca83a5a428865ed41802dca542fce6d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _voxelMaterial: {fileID: 2100000, guid: 00f75f3f24ca75b4583df482d668c20f, type: 2}
---- !u!114 &1366937370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1366937367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dad6959241bf4b2487f1ff763348a770, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objects: []
-  minNodeSize: 1
+  _mapDrawer: {fileID: 253985165}
 --- !u!1 &1814403958
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,3 +476,4 @@ SceneRoots:
   - {fileID: 501436738}
   - {fileID: 1814403960}
   - {fileID: 1366937368}
+  - {fileID: 253985166}

@@ -1,10 +1,9 @@
 using System.IO;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class MapReader : MonoBehaviour
 {
-    [SerializeField] private Material _voxelMaterial;
+    [SerializeField] private MapDrawer _mapDrawer;
 
     private const int ChunkSize = 32;
     private int _chunkPosX = 0;
@@ -15,28 +14,22 @@ public class MapReader : MonoBehaviour
     {
         var voxels = ReadVoxelFile("Assets/Scenes/DC3.3dmap", out int width, out int height, out int depth);
         
+        // cull inner blocks
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 for (int z = 0; z < depth; z++)
                 {
-                    if (voxels[x, y, z] && IsVisible(voxels, x, y, z, width, height, depth))
+                    if (voxels[x, y, z])
                     {
-                        var voxel = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        voxel.transform.position = new Vector3(x, y, z);
-                        voxel.transform.SetParent(transform);
-
-                        var meshRenderer = voxel.GetComponent<MeshRenderer>();
-                        meshRenderer.receiveShadows = false;
-                        meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
-                        meshRenderer.sharedMaterial = _voxelMaterial;
+                        voxels[x, y, z] = IsVisible(voxels, x, y, z, width, height, depth);
                     }
                 }
             }
         }
-        
-        //StaticBatchingUtility.Combine(gameObject);
+
+        _mapDrawer.Redraw(voxels, width, height, depth);
     }
 
     private bool IsVisible(bool[,,] voxels, int x, int y, int z, int width, int height, int depth)
