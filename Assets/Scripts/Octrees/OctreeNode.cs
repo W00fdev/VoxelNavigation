@@ -10,22 +10,25 @@ namespace Octrees
         public Bounds bounds => _bounds;
         public List<OctreeObject> objects => _objects;
         public OctreeNode[] children => _children;
+        public OctreeNode parent => _parent;
 
         readonly int _id;
         readonly float _minNodeSize;
         readonly Bounds _bounds;
         readonly Bounds[] _childBounds = new Bounds[8];
         readonly List<OctreeObject> _objects = new();
+        readonly OctreeNode _parent;
         OctreeNode[] _children;
 
         static int _nextId;
 
-        public OctreeNode(Bounds bounds, float minNodeSize)
+        public OctreeNode(OctreeNode parent, Bounds bounds, float minNodeSize)
         {
             _id = _nextId++;
 
             _bounds = bounds;
             _minNodeSize = minNodeSize;
+            _parent = parent;
 
             Vector3 newSize = bounds.size * 0.5f;
             Vector3 centerOffset = bounds.size * 0.25f;
@@ -73,7 +76,7 @@ namespace Octrees
 
             for (int i = 0; i < 8; i++)
             {
-                _children[i] ??= new OctreeNode(_childBounds[i], _minNodeSize);
+                _children[i] ??= new OctreeNode(this, _childBounds[i], _minNodeSize);
 
                 if (octreeObject.Intersects(_childBounds[i]))
                 {
@@ -106,13 +109,13 @@ namespace Octrees
                 }
             }*/
 
-            if (_children != null)
+            /*if (_children != null)
             {
                 foreach (OctreeNode childOctreeNode in _children)
                 {
                     childOctreeNode.DrawNode();
                 }
-            }
+            }*/
         }
     }
 }

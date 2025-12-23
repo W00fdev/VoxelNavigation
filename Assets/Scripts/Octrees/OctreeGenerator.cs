@@ -16,6 +16,7 @@ namespace Octrees
         [SerializeField] MapDrawer _mapDrawer;
         [SerializeField] MapReader _mapReader;
 
+        NativeArray<float3> _positions;
         readonly AStarGraph _waypoints = new();
         Octree _ot;
 
@@ -33,10 +34,15 @@ namespace Octrees
                 depth: voxels.GetLength(2)
             );
 
-            NativeArray<float3> positions =
-                TransformMatrixArrayFactory.CreatePositionsFromVoxels(totalFilledVoxelsCount, voxels);
+            _positions = TransformMatrixArrayFactory.CreatePositionsFromVoxels(totalFilledVoxelsCount, voxels);
 
-            _ot = new Octree(ref positions, MinNodeSize, _waypoints);
+
+            _ot = new Octree(ref _positions, MinNodeSize, _waypoints);
+        }
+
+        void OnDestroy()
+        {
+            _positions.Dispose();
         }
 
         void OnDrawGizmos()

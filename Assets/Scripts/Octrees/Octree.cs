@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Pathfinding;
 using Unity.Collections;
 using Unity.Mathematics;
+using Unity.Mathematics.Geometry;
 using UnityEngine;
 
 namespace Octrees
@@ -31,13 +32,56 @@ namespace Octrees
 
         void GetEdges()
         {
-            foreach (OctreeNode leaf in _emptyLeaves)
+            /*foreach (OctreeNode leaf in _emptyLeaves)
             {
                 foreach (OctreeNode otherLeaf in _emptyLeaves)
                 {
                     if (leaf.bounds.Intersects(otherLeaf.bounds))
                     {
                         _aStarGraph.AddEdge(leaf, otherLeaf);
+                    }
+                }
+            }*/
+
+            // root is leaf
+
+            if (_emptyLeaves.Count == 0)
+                return;
+
+            foreach (OctreeNode leaf in _emptyLeaves)
+            {
+                foreach (OctreeNode neighbour in leaf.parent.children)
+                {
+                    if (neighbour == leaf
+                     || neighbour.children == null)
+                        continue;
+
+                    List<OctreeNode> allIntersectLeavesOfNeighbour = new();
+                    GetAllIntersectLeavesOf(neighbour, leaf, allIntersectLeavesOfNeighbour);
+
+                    foreach (OctreeNode intersectNeighbourLeaf in allIntersectLeavesOfNeighbour)
+                    {
+                        _aStarGraph.AddEdge(intersectNeighbourLeaf, leaf);
+                    }
+                }
+            }
+        }
+
+        void GetAllIntersectLeavesOf(OctreeNode node, OctreeNode intersectable, List<OctreeNode> result)
+        {
+            Bounds intersectableBounds = intersectable.bounds;
+
+            foreach (OctreeNode child in node.children)
+            {
+                if (child.bounds.Intersects(intersectableBounds))
+                {
+                    if (child.isLeaf)
+                    {
+                        result.Add(child);
+                    }
+                    else
+                    {
+                        GetAllIntersectLeavesOf(child, intersectable, result);
                     }
                 }
             }
@@ -72,7 +116,7 @@ namespace Octrees
 
         void CreateTree(ref NativeArray<float3> collisionPositions, float minNodeSize)
         {
-            _root = new OctreeNode(_bounds, minNodeSize);
+            _root = new OctreeNode(null, _bounds, minNodeSize);
 
             foreach (Vector3 collisionPosition in collisionPositions)
             {
