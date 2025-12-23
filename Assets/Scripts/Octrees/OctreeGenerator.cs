@@ -48,7 +48,7 @@ namespace Octrees
             Gizmos.DrawWireCube(_ot.bounds.center, _ot.bounds.size);
 
             _ot.root.DrawNode();
-            _ot.AStarGraph.DrawGraph();
+            _ot.aStarGraph.DrawGraph();
         }
     }
 }

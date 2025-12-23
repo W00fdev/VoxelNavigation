@@ -9,10 +9,13 @@ namespace Pathfinding
     {
         const int MaxIterations = 1000;
 
-        public readonly Dictionary<OctreeNode, Node> nodes = new();
-        public readonly HashSet<Edge> edges = new();
+        public HashSet<Edge> edges => _edges;
+        public Dictionary<OctreeNode, Node> nodes => _nodes;
+        public List<Node> pathList => _pathList;
 
+        readonly Dictionary<OctreeNode, Node> _nodes = new();
         readonly List<Node> _pathList = new();
+        readonly HashSet<Edge> _edges = new();
 
         public int GetPathLength() => _pathList.Count;
 
@@ -145,9 +148,9 @@ namespace Pathfinding
 
         public void AddNode(OctreeNode octreeNode)
         {
-            if (!nodes.ContainsKey(octreeNode))
+            if (!_nodes.ContainsKey(octreeNode))
             {
-                nodes.Add(octreeNode, new Node(octreeNode));
+                _nodes.Add(octreeNode, new Node(octreeNode));
             }
         }
 
@@ -162,7 +165,7 @@ namespace Pathfinding
 
             var edge = new Edge(nodeA, nodeB);
 
-            if (edges.Add(edge))
+            if (_edges.Add(edge))
             {
                 nodeA.edges.Add(edge);
                 nodeB.edges.Add(edge);
@@ -173,12 +176,12 @@ namespace Pathfinding
         {
             Gizmos.color = Color.blue;
 
-            foreach (Edge edge in edges)
+            foreach (Edge edge in _edges)
             {
                 Gizmos.DrawLine(edge.a.octreeNode.bounds.center, edge.b.octreeNode.bounds.center);
             }
 
-            foreach (Node node in nodes.Values)
+            foreach (Node node in _nodes.Values)
             {
                 Gizmos.DrawWireSphere(node.octreeNode.bounds.center, 0.2f);
             }
@@ -186,7 +189,7 @@ namespace Pathfinding
 
         Node FindNode(OctreeNode octreeNode)
         {
-            nodes.TryGetValue(octreeNode, out Node node);
+            _nodes.TryGetValue(octreeNode, out Node node);
             return node;
         }
     }

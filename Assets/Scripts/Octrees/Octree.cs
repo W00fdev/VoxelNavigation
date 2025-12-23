@@ -10,13 +10,12 @@ namespace Octrees
     {
         public OctreeNode root => _root;
         public Bounds bounds => _bounds;
-        public AStarGraph AStarGraph => _aStarGraph;
+        public AStarGraph aStarGraph => _aStarGraph;
 
-        OctreeNode _root;
+        readonly AStarGraph _aStarGraph;
+        readonly List<OctreeNode> _emptyLeaves = new();
         Bounds _bounds;
-        AStarGraph _aStarGraph;
-
-        List<OctreeNode> _emptyLeaves = new();
+        OctreeNode _root;
 
         public Octree(ref NativeArray<float3> collisionPositions, float minNodeSize, AStarGraph aStarGraph)
         {
@@ -25,7 +24,7 @@ namespace Octrees
             CalculateBounds(ref collisionPositions);
             CreateTree(ref collisionPositions, minNodeSize);
 
-            GetEmptyLeaves(root);
+            GetEmptyLeaves(_root);
             GetEdges();
             Debug.Log(aStarGraph.edges.Count);
         }

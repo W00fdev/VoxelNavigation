@@ -9,7 +9,7 @@ namespace Octrees
         public int id => _id;
         public Bounds bounds => _bounds;
         public List<OctreeObject> objects => _objects;
-        public OctreeNode[] children;
+        public OctreeNode[] children => _children;
 
         readonly int _id;
         readonly float _minNodeSize;
@@ -94,17 +94,17 @@ namespace Octrees
 
         public void DrawNode()
         {
-            /*Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(_bounds.center, _bounds.size * 1f);*/
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(_bounds.center, _bounds.size * 1f);
 
-            foreach (OctreeObject octreeObject in _objects)
+            /*foreach (OctreeObject octreeObject in _objects)
             {
                 if (octreeObject.Intersects(_bounds))
                 {
                     Gizmos.color = Color.red;
                     Gizmos.DrawCube(_bounds.center, _bounds.size);
                 }
-            }
+            }*/
 
             if (_children != null)
             {
