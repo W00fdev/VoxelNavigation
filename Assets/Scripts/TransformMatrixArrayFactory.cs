@@ -6,11 +6,8 @@ using UnityEngine;
 
 public static class TransformMatrixArrayFactory
 {
-    public static NativeArray<Matrix4x4> CreateFromVoxels(
-        int filledCount,
-        bool[,,] voxels,
-        Allocator allocator = Allocator.Persistent
-    )
+    public static NativeArray<float3> CreatePositionsFromVoxels(int filledCount, bool[,,] voxels,
+        Allocator allocator = Allocator.Persistent)
     {
         int width = voxels.GetLength(0);
         int height = voxels.GetLength(1);
@@ -34,21 +31,29 @@ public static class TransformMatrixArrayFactory
             }
         }
 
-        var matrices = CreateFromPositions(positions, allocator);
+        return positions;
+    }
+
+    public static NativeArray<Matrix4x4> CreateFromVoxels(int filledCount, bool[,,] voxels,
+        Allocator allocator = Allocator.Persistent)
+    {
+        NativeArray<float3> positions = CreatePositionsFromVoxels(filledCount, voxels, allocator);
+        NativeArray<Matrix4x4> matrices = CreateFromPositions(positions, allocator);
+
         positions.Dispose();
 
         return matrices;
     }
 
-    public static NativeArray<Matrix4x4> CreateFromPositions(
-        NativeArray<float3> positions,
+    public static NativeArray<Matrix4x4> CreateFromPositions(NativeArray<float3> positions,
         Allocator allocator = Allocator.Persistent)
     {
         var transformMatrixArray = new NativeArray<Matrix4x4>(positions.Length, allocator);
+
         var job = new InitializeMatrixJob
         {
-            Positions = positions,
-            TransformMatrixArray = transformMatrixArray
+            positions = positions,
+            transformMatrixArray = transformMatrixArray
         };
 
         JobHandle jobHandle = job.Schedule(positions.Length, 64);
@@ -58,21 +63,20 @@ public static class TransformMatrixArrayFactory
     }
 
     [BurstCompile]
-    private struct InitializeMatrixJob : IJobParallelFor
+    struct InitializeMatrixJob : IJobParallelFor
     {
-        [ReadOnly] public NativeArray<float3> Positions;
-        [WriteOnly] public NativeArray<Matrix4x4> TransformMatrixArray;
+        [ReadOnly] public NativeArray<float3> positions;
+        [WriteOnly] public NativeArray<Matrix4x4> transformMatrixArray;
 
         public void Execute(int index)
         {
-            float3 position = Positions[index];
+            float3 position = positions[index];
 
-            TransformMatrixArray[index] =
-                Matrix4x4.TRS(
-                    new Vector3(position.x, position.y, position.z),
-                    Quaternion.identity,
-                    Vector3.one
-                );
+            transformMatrixArray[index] = Matrix4x4.TRS(
+                new Vector3(position.x, position.y, position.z),
+                Quaternion.identity,
+                Vector3.one
+            );
         }
     }
 }

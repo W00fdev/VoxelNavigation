@@ -1,6 +1,6 @@
-using System;
 using System.Linq;
 using Octrees;
+using Pathfinding;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,54 +8,63 @@ namespace DefaultNamespace
 {
     public class Mover : MonoBehaviour
     {
-        private float speed = 5f;
-        private float accuracy = 1f;
-        private float turnSpeed = 5f;
+        [SerializeField] OctreeGenerator _octreeGenerator;
+        [SerializeField] float _speed = 5f;
+        [SerializeField] float _accuracy = 1f;
+        [SerializeField] float _turnSpeed = 5f;
+        [field: SerializeField] float _pathLength { get; set; }
 
-        private int currentWaypoint;
-        private OctreeNode currentNode;
-        private Vector3 destination;
+        int _currentWaypoint;
+        OctreeNode _currentNode;
+        Vector3 _destination;
+        AStarGraph _aStarGraph;
 
-        public OctreeGenerator octreeGenerator;
-        private Graph graph;
-        
-        [SerializeField] private int _pathLength;
-
-        private void Start()
+        void Start()
         {
-            graph = octreeGenerator.waypoints;
-            currentNode = GetClosestNode(transform.position);
-            
+            _aStarGraph = _octreeGenerator.waypoints;
+            _currentNode = GetClosestNode(transform.position);
+
             GetRandomDestination();
         }
 
-        private void Update()
+        void Update()
         {
-            if (graph == null) return;
+            if (_aStarGraph == null)
+                return;
 
-            if (graph.GetPathLength() == 0 || currentWaypoint >= graph.GetPathLength())
+            if (_aStarGraph.GetPathLength() == 0
+             || _currentWaypoint >= _aStarGraph.GetPathLength())
             {
                 GetRandomDestination();
                 return;
             }
 
-            if (Vector3.Distance(graph.GetPathNode(currentWaypoint).bounds.center, transform.position) < accuracy)
+            if (Vector3.Distance(
+                    _aStarGraph.GetPathNode(_currentWaypoint)
+                       .bounds.center,
+                    transform.position
+                )
+              < _accuracy)
             {
-                currentWaypoint++;
-                _pathLength = currentWaypoint;
+                _currentWaypoint++;
+                _pathLength = _currentWaypoint;
             }
 
-            if (currentWaypoint < graph.GetPathLength())
+            if (_currentWaypoint < _aStarGraph.GetPathLength())
             {
-                currentNode = graph.GetPathNode(currentWaypoint);
-                destination = currentNode.bounds.center;
+                _currentNode = _aStarGraph.GetPathNode(_currentWaypoint);
+                _destination = _currentNode.bounds.center;
 
-                Vector3 direction = destination - transform.position;
+                Vector3 direction = _destination - transform.position;
                 direction.Normalize();
 
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction),
-                    turnSpeed * Time.deltaTime);
-                transform.Translate(0, 0, speed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    Quaternion.LookRotation(direction),
+                    _turnSpeed * Time.deltaTime
+                );
+
+                transform.Translate(0, 0, _speed * Time.deltaTime);
             }
             else
             {
@@ -63,12 +72,12 @@ namespace DefaultNamespace
             }
         }
 
-        private OctreeNode GetClosestNode(Vector3 position)
+        OctreeNode GetClosestNode(Vector3 position)
         {
             OctreeNode closestNode = null;
             float closestDistanceSqr = Mathf.Infinity;
 
-            foreach (var kvNode in graph.nodes)
+            foreach (var kvNode in _aStarGraph.nodes)
             {
                 OctreeNode node = kvNode.Key;
                 float distanceSqr = (node.bounds.center - position).sqrMagnitude;
@@ -83,16 +92,19 @@ namespace DefaultNamespace
             return closestNode;
         }
 
-        private void GetRandomDestination()
+        void GetRandomDestination()
         {
             OctreeNode destinationNode;
+
             do
             {
-                destinationNode = graph.nodes.ElementAt(Random.Range(0, graph.nodes.Count)).Key;
-            } while (!graph.AStar(currentNode, destinationNode));
+                destinationNode = _aStarGraph.nodes.ElementAt(Random.Range(0, _aStarGraph.nodes.Count))
+                   .Key;
+            }
+            while (!_aStarGraph.AStar(_currentNode, destinationNode));
 
-            currentWaypoint = 0;
-            _pathLength = currentWaypoint;
+            _currentWaypoint = 0;
+            _pathLength = _currentWaypoint;
         }
 
         /*private void OnDrawGizmos()

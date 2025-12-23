@@ -5,24 +5,27 @@ namespace Octrees
 {
     public class OctreeNode
     {
-        public List<OctreeObject> objects = new();
-
-        private static int nextId;
-        public readonly int id;
-
-        public Bounds bounds;
-        private Bounds[] childBounds = new Bounds[8];
+        public bool isLeaf => children == null;
+        public int id => _id;
+        public Bounds bounds => _bounds;
+        public List<OctreeObject> objects => _objects;
         public OctreeNode[] children;
-        public bool IsLeaf => children == null;
 
-        private float minNodeSize;
+        readonly int _id;
+        readonly float _minNodeSize;
+        readonly Bounds _bounds;
+        readonly Bounds[] _childBounds = new Bounds[8];
+        readonly List<OctreeObject> _objects = new();
+        OctreeNode[] _children;
+
+        static int _nextId;
 
         public OctreeNode(Bounds bounds, float minNodeSize)
         {
-            id = nextId++;
+            _id = _nextId++;
 
-            this.bounds = bounds;
-            this.minNodeSize = minNodeSize;
+            _bounds = bounds;
+            _minNodeSize = minNodeSize;
 
             Vector3 newSize = bounds.size * 0.5f;
             Vector3 centerOffset = bounds.size * 0.25f;
@@ -31,37 +34,52 @@ namespace Octrees
             for (int i = 0; i < 8; i++)
             {
                 Vector3 childCenter = parentCenter;
-                childCenter.x += centerOffset.x * ((i & 1) == 0 ? -1 : 1);
-                childCenter.y += centerOffset.y * ((i & 2) == 0 ? -1 : 1);
-                childCenter.z += centerOffset.z * ((i & 4) == 0 ? -1 : 1);
-                childBounds[i] = new Bounds(childCenter, newSize);
+
+                childCenter.x += centerOffset.x
+                  * ((i & 1) == 0
+                        ? -1
+                        : 1);
+
+                childCenter.y += centerOffset.y
+                  * ((i & 2) == 0
+                        ? -1
+                        : 1);
+
+                childCenter.z += centerOffset.z
+                  * ((i & 4) == 0
+                        ? -1
+                        : 1);
+
+                _childBounds[i] = new Bounds(childCenter, newSize);
             }
         }
 
-        public void Divide(GameObject worldObject)
+        public void Divide(Vector3 collisionPosition)
         {
-            Divide(new OctreeObject(worldObject));
+            Divide(new OctreeObject(collisionPosition));
         }
 
         void Divide(OctreeObject octreeObject)
         {
-            if (bounds.size.x <= minNodeSize)
+            if (_bounds.size.x <= _minNodeSize)
             {
                 AddObject(octreeObject);
                 return;
             }
 
-            children ??= new OctreeNode[8];
+            _children ??= new OctreeNode[8];
 
             bool intersectsChild = false;
 
             for (int i = 0; i < 8; i++)
             {
-                children[i] ??= new OctreeNode(childBounds[i], minNodeSize);
+                _children[i] ??= new OctreeNode(_childBounds[i], _minNodeSize);
 
-                if (octreeObject.Intersects(childBounds[i]))
+                if (octreeObject.Intersects(_childBounds[i]))
                 {
-                    children[i].Divide(octreeObject);
+                    _children[i]
+                       .Divide(octreeObject);
+
                     intersectsChild = true;
                 }
             }
@@ -72,25 +90,25 @@ namespace Octrees
             }
         }
 
-        void AddObject(OctreeObject octreeObject) => objects.Add(octreeObject);
+        void AddObject(OctreeObject octreeObject) => _objects.Add(octreeObject);
 
         public void DrawNode()
         {
             /*Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(bounds.center, bounds.size * 1f);*/
+            Gizmos.DrawWireCube(_bounds.center, _bounds.size * 1f);*/
 
-            foreach (OctreeObject octreeObject in objects)
+            foreach (OctreeObject octreeObject in _objects)
             {
-                if (octreeObject.Intersects(bounds))
+                if (octreeObject.Intersects(_bounds))
                 {
                     Gizmos.color = Color.red;
-                    Gizmos.DrawCube(bounds.center, bounds.size);
+                    Gizmos.DrawCube(_bounds.center, _bounds.size);
                 }
             }
 
-            if (children != null)
+            if (_children != null)
             {
-                foreach (OctreeNode childOctreeNode in children)
+                foreach (OctreeNode childOctreeNode in _children)
                 {
                     childOctreeNode.DrawNode();
                 }

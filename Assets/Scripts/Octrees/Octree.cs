@@ -1,49 +1,56 @@
 using System.Collections.Generic;
+using Pathfinding;
+using Unity.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Octrees
 {
     public class Octree
     {
-        public OctreeNode root;
-        public Bounds bounds;
-        public Graph graph;
+        public OctreeNode root => _root;
+        public Bounds bounds => _bounds;
+        public AStarGraph AStarGraph => _aStarGraph;
 
-        private List<OctreeNode> emptyLeaves = new();
+        OctreeNode _root;
+        Bounds _bounds;
+        AStarGraph _aStarGraph;
 
-        public Octree(GameObject[] worldObjects, float minNodeSize, Graph graph)
+        List<OctreeNode> _emptyLeaves = new();
+
+        public Octree(ref NativeArray<float3> collisionPositions, float minNodeSize, AStarGraph aStarGraph)
         {
-            this.graph = graph;
+            _aStarGraph = aStarGraph;
 
-            // too much calculations
-            //CalculateBounds(worldObjects);
-            //CreateTree(worldObjects, minNodeSize);
+            CalculateBounds(ref collisionPositions);
+            CreateTree(ref collisionPositions, minNodeSize);
 
             GetEmptyLeaves(root);
             GetEdges();
-            Debug.Log(graph.edges.Count);
+            Debug.Log(aStarGraph.edges.Count);
         }
 
-        private void GetEdges()
+        void GetEdges()
         {
-            foreach (OctreeNode leaf in emptyLeaves)
+            foreach (OctreeNode leaf in _emptyLeaves)
             {
-                foreach (OctreeNode otherLeaf in emptyLeaves)
+                foreach (OctreeNode otherLeaf in _emptyLeaves)
                 {
                     if (leaf.bounds.Intersects(otherLeaf.bounds))
                     {
-                        graph.AddEdge(leaf, otherLeaf);
+                        _aStarGraph.AddEdge(leaf, otherLeaf);
                     }
                 }
             }
         }
 
-        private void GetEmptyLeaves(OctreeNode octreeNode)
+        void GetEmptyLeaves(OctreeNode octreeNode)
         {
-            if (octreeNode.IsLeaf && octreeNode.objects.Count == 0)
+            if (octreeNode.isLeaf
+             && octreeNode.objects.Count == 0)
             {
-                emptyLeaves.Add(octreeNode);
-                graph.AddNode(octreeNode);
+                _emptyLeaves.Add(octreeNode);
+                _aStarGraph.AddNode(octreeNode);
                 return;
             }
 
@@ -59,32 +66,32 @@ namespace Octrees
             {
                 for (int j = i + 1; j < octreeNode.children.Length; j++)
                 {
-                    graph.AddEdge(octreeNode.children[i], octreeNode.children[j]);
+                    _aStarGraph.AddEdge(octreeNode.children[i], octreeNode.children[j]);
                 }
             }
         }
 
-        void CreateTree(GameObject[] worldObjects, float minNodeSize)
+        void CreateTree(ref NativeArray<float3> collisionPositions, float minNodeSize)
         {
-            root = new OctreeNode(bounds, minNodeSize);
+            _root = new OctreeNode(_bounds, minNodeSize);
 
-            foreach (GameObject worldObject in worldObjects)
+            foreach (Vector3 collisionPosition in collisionPositions)
             {
-                root.Divide(worldObject);
+                _root.Divide(collisionPosition);
             }
         }
 
-        void CalculateBounds(GameObject[] worldObjects)
+        void CalculateBounds(ref NativeArray<float3> collisionPositions)
         {
-            foreach (GameObject worldObject in worldObjects)
+            foreach (Vector3 collisionPosition in collisionPositions)
             {
-                bounds.Encapsulate(worldObject.GetComponent<Collider>().bounds);
+                _bounds.Encapsulate(new Bounds(collisionPosition, Vector3.one));
             }
 
-            Vector3 size = Vector3.one * Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z) * 0.6f;
-            bounds.SetMinMax(bounds.center - size, bounds.center + size);
+            Vector3 size = Vector3.one * Mathf.Max(_bounds.size.x, _bounds.size.y, _bounds.size.z) * 0.6f;
+            _bounds.SetMinMax(_bounds.center - size, _bounds.center + size);
 
-            UnityEngine.Debug.Log($"#{Time.frameCount}: bounds: {bounds.center} + size: {bounds.size}");
+            UnityEngine.Debug.Log($"#{Time.frameCount}: bounds: {_bounds.center} + size: {_bounds.size}");
         }
     }
 }

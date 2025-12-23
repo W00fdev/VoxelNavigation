@@ -4,16 +4,16 @@ namespace Octrees
 {
     public class OctreeObject
     {
-        private Bounds bounds;
+        readonly Bounds _bounds;
 
-        public OctreeObject(GameObject gameObject)
+        public OctreeObject(Vector3 collisionPosition)
         {
-            bounds = gameObject.GetComponent<Collider>().bounds;
+            _bounds = new Bounds(collisionPosition, Vector3.one);
         }
 
         public bool Intersects(Bounds boundsToCheck)
         {
-            return bounds.Intersects(boundsToCheck);
+            return _bounds.Intersects(boundsToCheck);
         }
     }
 }

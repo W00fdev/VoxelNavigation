@@ -1,41 +1,54 @@
 using System.Collections;
-using System.Collections.Generic;
+using Map;
+using Pathfinding;
+using Unity.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Octrees
 {
     public class OctreeGenerator : MonoBehaviour
     {
-        public float minNodeSize = 1f;
-        
-        private Octree ot;
-        private List<GameObject> objects = new List<GameObject>(64000);
+        const float MinNodeSize = 1f;
 
-        public readonly Graph waypoints = new();
+        public AStarGraph waypoints => _waypoints;
 
-        private IEnumerator Start()
+        [SerializeField] MapDrawer _mapDrawer;
+        [SerializeField] MapReader _mapReader;
+
+        readonly AStarGraph _waypoints = new();
+        Octree _ot;
+
+        IEnumerator Start()
         {
             yield return null;
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                objects.Add(transform.GetChild(i).gameObject);
-            }
 
-            UnityEngine.Debug.Log($"#{Time.frameCount}: childs {objects.Count}");
+            bool[,,] voxels = _mapReader.Read(cull: true, out int totalFilledVoxelsCount);
 
-            ot = new Octree(objects.ToArray(), minNodeSize, waypoints);
+            _mapDrawer.Redraw(
+                voxels,
+                totalFilledVoxelsCount,
+                width: voxels.GetLength(0),
+                height: voxels.GetLength(1),
+                depth: voxels.GetLength(2)
+            );
+
+            NativeArray<float3> positions =
+                TransformMatrixArrayFactory.CreatePositionsFromVoxels(totalFilledVoxelsCount, voxels);
+
+            _ot = new Octree(ref positions, MinNodeSize, _waypoints);
         }
 
-        private void OnDrawGizmos()
+        void OnDrawGizmos()
         {
-            if (ot == null)
+            if (_ot == null)
                 return;
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(ot.bounds.center, ot.bounds.size);
+            Gizmos.DrawWireCube(_ot.bounds.center, _ot.bounds.size);
 
-            ot.root.DrawNode();
-            ot.graph.DrawGraph();
+            _ot.root.DrawNode();
+            _ot.AStarGraph.DrawGraph();
         }
     }
 }
