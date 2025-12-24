@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Octrees;
+using Tools;
+using UnityEditor;
 using UnityEngine;
 
 namespace Pathfinding
@@ -16,6 +18,9 @@ namespace Pathfinding
         readonly Dictionary<OctreeNode, Node> _nodes = new();
         readonly List<Node> _pathList = new();
         readonly HashSet<Edge> _edges = new();
+        Camera _mainCamera;
+
+        public AStarGraph() { }
 
         public int GetPathLength() => _pathList.Count;
 
@@ -54,7 +59,7 @@ namespace Pathfinding
             SortedSet<Node> openSet = new(new NodeComparer());
             HashSet<Node> closedSet = new();
             int iterationCount = 0;
-            long actionsTaken = 0l;
+            long actionsTaken = 0L;
 
             start.g = 0;
             start.h = Heuristic(start, end);
@@ -176,14 +181,36 @@ namespace Pathfinding
         {
             Gizmos.color = Color.blue;
 
-            foreach (Edge edge in _edges)
+            _mainCamera ??= Camera.main;
+
+            if (_mainCamera == null)
+                return;
+
+            if (GizmosTools.ShowGraphEdges)
             {
-                Gizmos.DrawLine(edge.a.octreeNode.bounds.center, edge.b.octreeNode.bounds.center);
+                foreach (Edge edge in _edges)
+                {
+                    if (edge.GetMaxDistance(_mainCamera.transform.position) <= GizmosTools.DrawDistance)
+                    {
+                        Gizmos.DrawLine(edge.a.octreeNode.bounds.center, edge.b.octreeNode.bounds.center);
+                    }
+                }
             }
 
-            foreach (Node node in _nodes.Values)
+            if (GizmosTools.ShowGraphNodes)
             {
-                Gizmos.DrawWireSphere(node.octreeNode.bounds.center, 0.2f);
+                foreach (Node node in _nodes.Values)
+                {
+                    float distanceFromCamera = Vector3.Distance(
+                        node.octreeNode.bounds.center,
+                        _mainCamera.transform.position
+                    );
+
+                    if (distanceFromCamera <= GizmosTools.DrawDistance)
+                    {
+                        Gizmos.DrawWireSphere(node.octreeNode.bounds.center, GizmosTools.NodesRadius);
+                    }
+                }
             }
         }
 

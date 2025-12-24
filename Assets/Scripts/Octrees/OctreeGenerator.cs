@@ -36,7 +36,6 @@ namespace Octrees
 
             _positions = TransformMatrixArrayFactory.CreatePositionsFromVoxels(totalFilledVoxelsCount, voxels);
 
-
             _ot = new Octree(ref _positions, MinNodeSize, _waypoints);
         }
 

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Pathfinding
 {
     public class Edge
@@ -22,6 +24,17 @@ namespace Pathfinding
         public override int GetHashCode()
         {
             return a.GetHashCode() ^ b.GetHashCode();
+        }
+    }
+
+    public static class EdgeUtils
+    {
+        public static float GetMaxDistance(this Edge edge, Vector3 from)
+        {
+            float aDistance = Vector3.Distance(edge.a.octreeNode.bounds.center, from);
+            float bDistance = Vector3.Distance(edge.b.octreeNode.bounds.center, from);
+
+            return Mathf.Max(aDistance, bDistance);
         }
     }
 }

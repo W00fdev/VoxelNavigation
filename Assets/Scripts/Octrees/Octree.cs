@@ -1,8 +1,8 @@
+using System;
 using System.Collections.Generic;
-using Pathfinding;
 using Unity.Collections;
 using Unity.Mathematics;
-using Unity.Mathematics.Geometry;
+using Pathfinding;
 using UnityEngine;
 
 namespace Octrees
@@ -25,49 +25,51 @@ namespace Octrees
             CalculateBounds(ref collisionPositions);
             CreateTree(ref collisionPositions, minNodeSize);
 
+            DateTime startBenchmarkUtc = DateTime.Now;
+
+            UnityEngine.Debug.Log($"!@! {Time.frameCount}: start empty leaves gathering (utc = {startBenchmarkUtc})");
+
             GetEmptyLeaves(_root);
+
+            DateTime secondBenchmarkUtc = DateTime.Now;
+
+            UnityEngine.Debug.Log(
+                $"!@! {Time.frameCount}: ends empty leaves gathering (ticks={(secondBenchmarkUtc - startBenchmarkUtc).Ticks}) (duration = {(secondBenchmarkUtc - startBenchmarkUtc).Duration()}) (utc = {secondBenchmarkUtc})"
+            );
+
             GetEdges();
+
+            DateTime thirdBenchmarkUtc = DateTime.Now;
+
+            UnityEngine.Debug.Log(
+                $"!@! {Time.frameCount}: ends edges gathering (ticks={(thirdBenchmarkUtc - secondBenchmarkUtc).Ticks}) (duration = {(thirdBenchmarkUtc - secondBenchmarkUtc).Duration()}) (utc = {thirdBenchmarkUtc})"
+            );
+
             Debug.Log(aStarGraph.edges.Count);
         }
 
         void GetEdges()
         {
-            /*foreach (OctreeNode leaf in _emptyLeaves)
+            var visitedNodes = new HashSet<OctreeNode>();
+
+            foreach (OctreeNode leaf in _emptyLeaves)
             {
+                visitedNodes.Add(leaf);
+
                 foreach (OctreeNode otherLeaf in _emptyLeaves)
                 {
+                    if (visitedNodes.Contains(otherLeaf))
+                        continue;
+
                     if (leaf.bounds.Intersects(otherLeaf.bounds))
                     {
                         _aStarGraph.AddEdge(leaf, otherLeaf);
                     }
                 }
-            }*/
-
-            // root is leaf
-
-            if (_emptyLeaves.Count == 0)
-                return;
-
-            foreach (OctreeNode leaf in _emptyLeaves)
-            {
-                foreach (OctreeNode neighbour in leaf.parent.children)
-                {
-                    if (neighbour == leaf
-                     || neighbour.children == null)
-                        continue;
-
-                    List<OctreeNode> allIntersectLeavesOfNeighbour = new();
-                    GetAllIntersectLeavesOf(neighbour, leaf, allIntersectLeavesOfNeighbour);
-
-                    foreach (OctreeNode intersectNeighbourLeaf in allIntersectLeavesOfNeighbour)
-                    {
-                        _aStarGraph.AddEdge(intersectNeighbourLeaf, leaf);
-                    }
-                }
             }
         }
 
-        void GetAllIntersectLeavesOf(OctreeNode node, OctreeNode intersectable, List<OctreeNode> result)
+        /*void GetAllIntersectLeavesOf(OctreeNode node, OctreeNode intersectable, List<OctreeNode> result)
         {
             Bounds intersectableBounds = intersectable.bounds;
 
@@ -85,7 +87,7 @@ namespace Octrees
                     }
                 }
             }
-        }
+        }*/
 
         void GetEmptyLeaves(OctreeNode octreeNode)
         {
@@ -94,6 +96,7 @@ namespace Octrees
             {
                 _emptyLeaves.Add(octreeNode);
                 _aStarGraph.AddNode(octreeNode);
+
                 return;
             }
 
@@ -105,13 +108,13 @@ namespace Octrees
                 GetEmptyLeaves(octreeNodeChild);
             }
 
-            for (int i = 0; i < octreeNode.children.Length; i++)
+            /*for (int i = 0; i < octreeNode.children.Length; i++)
             {
                 for (int j = i + 1; j < octreeNode.children.Length; j++)
                 {
                     _aStarGraph.AddEdge(octreeNode.children[i], octreeNode.children[j]);
                 }
-            }
+            }*/
         }
 
         void CreateTree(ref NativeArray<float3> collisionPositions, float minNodeSize)

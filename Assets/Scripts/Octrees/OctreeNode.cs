@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Tools;
 using UnityEngine;
 
 namespace Octrees
@@ -30,7 +31,7 @@ namespace Octrees
             _minNodeSize = minNodeSize;
             _parent = parent;
 
-            Vector3 newSize = bounds.size * 0.5f;
+            Vector3 newSize = bounds.size * 0.505f;
             Vector3 centerOffset = bounds.size * 0.25f;
             Vector3 parentCenter = bounds.center;
 
@@ -97,8 +98,11 @@ namespace Octrees
 
         public void DrawNode()
         {
+            if (!GizmosTools.ShowBoundaries)
+                return;
+
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(_bounds.center, _bounds.size * 1f);
+            Gizmos.DrawWireCube(_bounds.center, _bounds.size * 1.05f);
 
             /*foreach (OctreeObject octreeObject in _objects)
             {
@@ -109,13 +113,13 @@ namespace Octrees
                 }
             }*/
 
-            /*if (_children != null)
+            if (_children != null)
             {
                 foreach (OctreeNode childOctreeNode in _children)
                 {
                     childOctreeNode.DrawNode();
                 }
-            }*/
+            }
         }
     }
 }
