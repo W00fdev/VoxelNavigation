@@ -2,7 +2,7 @@ namespace Tools
 {
     public static class GizmosTools
     {
-        public static float DrawDistance = 10000f;
+        public static float DrawDistance = 50000f;
 
         public static bool ShowGraphEdges;
 

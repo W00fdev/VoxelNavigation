@@ -128,6 +128,8 @@ namespace Pathfinding
                 _pathList.Add(current);
                 current = current.from;
             }
+
+            pathList.Reverse();
         }
 
         float Heuristic(Node a, Node b) => (a.octreeNode.bounds.center - b.octreeNode.bounds.center).sqrMagnitude;

@@ -18,7 +18,7 @@ namespace Tools
                 GizmosTools.ShowGraphNodes = !GizmosTools.ShowGraphNodes;
 
             GUILayout.Label($"Дальность отрисовки гизмо: {GizmosTools.DrawDistance:F2}");
-            GizmosTools.DrawDistance = GUILayout.HorizontalSlider(GizmosTools.DrawDistance, 0f, 1000f);
+            GizmosTools.DrawDistance = GUILayout.HorizontalSlider(GizmosTools.DrawDistance, 0f, 50000f);
 
             GUILayout.EndArea();
         }

@@ -9,9 +9,9 @@ namespace DefaultNamespace
     public class Mover : MonoBehaviour
     {
         [SerializeField] OctreeGenerator _octreeGenerator;
-        [SerializeField] float _speed = 5f;
-        [SerializeField] float _accuracy = 1f;
-        [SerializeField] float _turnSpeed = 5f;
+        [SerializeField] float _speed = 10;
+        [SerializeField] float _accuracy = 3f;
+        [SerializeField] float _turnSpeed = 10;
         [field: SerializeField] float _pathLength { get; set; }
 
         int _currentWaypoint;
@@ -19,7 +19,7 @@ namespace DefaultNamespace
         Vector3 _destination;
         AStarGraph _aStarGraph;
 
-        void Start()
+        public void Go()
         {
             _aStarGraph = _octreeGenerator.waypoints;
             _currentNode = GetClosestNode(transform.position);
@@ -35,6 +35,7 @@ namespace DefaultNamespace
             if (_aStarGraph.GetPathLength() == 0
              || _currentWaypoint >= _aStarGraph.GetPathLength())
             {
+                _currentNode = GetClosestNode(transform.position);
                 GetRandomDestination();
                 return;
             }
@@ -98,8 +99,12 @@ namespace DefaultNamespace
 
             do
             {
-                destinationNode = _aStarGraph.nodes.ElementAt(Random.Range(0, _aStarGraph.nodes.Count))
-                   .Key;
+                Vector3 RandomPosition = new Vector3(Random.Range(0, 75), Random.Range(0, 75), Random.Range(0, 75));
+                destinationNode = GetClosestNode(RandomPosition);
+
+/*                    destinationNode = _aStarGraph.nodes.ElementAt(Random.Range(0, _aStarGraph.nodes.Count))
+                       .Key;*/
+
             }
             while (!_aStarGraph.AStar(_currentNode, destinationNode));
 
@@ -107,27 +112,27 @@ namespace DefaultNamespace
             _pathLength = _currentWaypoint;
         }
 
-        /*private void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
-            if (graph == null || graph.GetPathLength() == 0) return;
+            if (_aStarGraph == null || _aStarGraph.GetPathLength() == 0) return;
 
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(graph.GetPathNode(0).bounds.center, 0.7f);
+            Gizmos.DrawWireSphere(_aStarGraph.GetPathNode(0).bounds.center, 0.7f);
 
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(graph.GetPathNode(graph.GetPathLength() - 1).bounds.center, 0.85f);
+            Gizmos.DrawWireSphere(_aStarGraph.GetPathNode(_aStarGraph.GetPathLength() - 1).bounds.center, 0.85f);
 
             Gizmos.color = Color.green;
-            for (int i = 0; i < graph.GetPathLength(); i++)
+            for (int i = 0; i < _aStarGraph.GetPathLength(); i++)
             {
-                Gizmos.DrawWireSphere(graph.GetPathNode(i).bounds.center, 0.5f);
-                if (i < graph.GetPathLength() - 1)
+                Gizmos.DrawWireSphere(_aStarGraph.GetPathNode(i).bounds.center, 0.5f);
+                if (i < _aStarGraph.GetPathLength() - 1)
                 {
-                    Vector3 start = graph.GetPathNode(i).bounds.center;
-                    Vector3 end = graph.GetPathNode(i + 1).bounds.center;
+                    Vector3 start = _aStarGraph.GetPathNode(i).bounds.center;
+                    Vector3 end = _aStarGraph.GetPathNode(i + 1).bounds.center;
                     Gizmos.DrawLine(start, end);
                 }
             }
-        }*/
+        }
     }
 }

@@ -41,15 +41,15 @@ namespace Map
             return voxels;
         }
 
-        bool IsVisible(bool[,,] voxels, int x, int y, int z, int width, int height, int depth)
+        private bool IsVisible(bool[,,] voxels, int x, int y, int z, int width, int height, int depth)
         {
             if (x + 1 >= width
-             || y + 1 >= height
-             || y - 1 <= 0
-             || x - 1 <= 0
-             || z + 1 >= depth
-             || z - 1 <= 0)
-                return true;
+            || y + 1 >= height
+            || y - 1 <= 0
+            || x - 1 <= 0
+            || z + 1 >= depth
+            || z - 1 <= 0)
+                voxels[x, y, z] = true;
 
             return !(voxels[x + 1, y, z]
              && voxels[x - 1, y, z]
@@ -59,23 +59,6 @@ namespace Map
              && voxels[x, y, z - 1]);
         }
 
-        void GreedyMesh()
-        {
-            for (int d = 0; d < 3; d++)
-            {
-                int i,
-                    j,
-                    k,
-                    l,
-                    w,
-                    h;
-
-                int u = (d + 1) % 3;
-                int v = (d + 2) % 3;
-
-                var x = new int[3];
-            }
-        }
 
         static bool[,,] ReadVoxelFile(string filePath, out int width, out int height, out int depth)
         {

@@ -15,6 +15,7 @@ namespace Octrees
 
         [SerializeField] MapDrawer _mapDrawer;
         [SerializeField] MapReader _mapReader;
+        [SerializeField] DefaultNamespace.Mover _mover;
 
         NativeArray<float3> _positions;
         readonly AStarGraph _waypoints = new();
@@ -24,7 +25,9 @@ namespace Octrees
         {
             yield return null;
 
-            bool[,,] voxels = _mapReader.Read(cull: true, out int totalFilledVoxelsCount);
+            //bool[,,] voxels = _mapReader.Read(cull: true, out int totalFilledVoxelsCount);
+            bool[,,] voxels = MapGenerator.GenerateTube();
+            MapCuller.Cull(ref voxels, out int totalFilledVoxelsCount);
 
             _mapDrawer.Redraw(
                 voxels,
@@ -37,6 +40,7 @@ namespace Octrees
             _positions = TransformMatrixArrayFactory.CreatePositionsFromVoxels(totalFilledVoxelsCount, voxels);
 
             _ot = new Octree(ref _positions, MinNodeSize, _waypoints);
+            _mover.Go();
         }
 
         void OnDestroy()
