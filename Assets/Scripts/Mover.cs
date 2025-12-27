@@ -99,7 +99,7 @@ namespace DefaultNamespace
 
             do
             {
-                Vector3 RandomPosition = new Vector3(Random.Range(0, 75), Random.Range(0, 75), Random.Range(0, 75));
+                Vector3 RandomPosition = new Vector3(Random.Range(0, _octreeGenerator.MapSize.x), Random.Range(0, _octreeGenerator.MapSize.y), Random.Range(0, _octreeGenerator.MapSize.z));
                 destinationNode = GetClosestNode(RandomPosition);
 
 /*                    destinationNode = _aStarGraph.nodes.ElementAt(Random.Range(0, _aStarGraph.nodes.Count))

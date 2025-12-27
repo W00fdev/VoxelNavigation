@@ -4,6 +4,32 @@ namespace Map
 {
     public static class MapGenerator
     {
+        public static bool[,,] CreateEmptyMap(Vector3Int size, bool filler = false)
+        {
+            return CreateEmptyMap(size.x, size.y, size.z, filler);
+        }
+
+        public static bool[,,] CreateEmptyMap(int width, int height, int depth, bool filler = false)
+        {
+            bool[,,] voxels = new bool[width, height, depth];
+
+            if (!filler)
+                return voxels;
+            
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    for (int z = 0; z < depth; z++)
+                    {
+                        voxels[x, y, z] = filler;
+                    }
+                }
+            }
+
+            return voxels;
+        }
+
         public static bool[,,] GenerateTube()
         {
             // –азмеры пространства согласно условию
