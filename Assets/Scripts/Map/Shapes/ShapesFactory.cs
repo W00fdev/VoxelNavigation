@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Map
@@ -99,23 +100,23 @@ namespace Map
             }
         }
 
-        public static void CreateTorus(ref bool[,,] map, Vector3Int center, int outerRadius, int innerRadius)
+        public static void CreateTorus(ref bool[,,] map, Vector3Int center, int biggerRadius, int smallerRadius)
         {
             int width = map.GetLength(0);
             int height = map.GetLength(1);
             int depth = map.GetLength(2);
 
-            int boundingRadius = outerRadius + innerRadius;
+            int outerBoundingRadius = biggerRadius + smallerRadius;
 
             // define bounding cube around sphere
-            int minX = Mathf.Max(0, Mathf.FloorToInt(center.x - boundingRadius));
-            int maxX = Mathf.Min(width - 1, Mathf.CeilToInt(center.x + boundingRadius));
+            int minX = Mathf.Max(0, Mathf.FloorToInt(center.x - outerBoundingRadius));
+            int maxX = Mathf.Min(width - 1, Mathf.CeilToInt(center.x + outerBoundingRadius));
 
-            int minY = Mathf.Max(0, Mathf.FloorToInt(center.y - boundingRadius));
-            int maxY = Mathf.Min(height - 1, Mathf.CeilToInt(center.y + boundingRadius));
+            int minY = Mathf.Max(0, Mathf.FloorToInt(center.y - outerBoundingRadius));
+            int maxY = Mathf.Min(height - 1, Mathf.CeilToInt(center.y + outerBoundingRadius));
 
-            int minZ = Mathf.Max(0, Mathf.FloorToInt(center.z - boundingRadius));
-            int maxZ = Mathf.Min(depth - 1, Mathf.CeilToInt(center.z + boundingRadius));
+            int minZ = Mathf.Max(0, Mathf.FloorToInt(center.z - outerBoundingRadius));
+            int maxZ = Mathf.Min(depth - 1, Mathf.CeilToInt(center.z + outerBoundingRadius));
 
             // bound by map
             minX = Mathf.Clamp(minX, 0, width);
@@ -127,16 +128,31 @@ namespace Map
             minZ = Mathf.Clamp(minZ, 0, depth);
             maxZ = Mathf.Clamp(maxZ, 0, depth);
 
-
             for (int x = minX; x <= maxX; x++)
             {
                 for (int y = minY; y <= maxY; y++)
                 {
                     for (int z = minZ; z <= maxZ; z++)
                     {
-                        float squaredDistance = SquaredDistance(x, y, z, center);
-
-                        map[x, y, z] = squaredDistance <= outerRadius && squaredDistance >= innerRadius;
+                        Vector3 p = new Vector3(x - center.x, y - center.y, z - center.z);
+                
+                        // Вычисляем расстояние в плоскости XZ
+                        float distanceXZ = Mathf.Sqrt(p.x * p.x + p.z * p.z);
+                
+                        // Создаем 2D вектор как в шейдере
+                        Vector2 q = new Vector2(distanceXZ - biggerRadius, p.y);
+                
+                        // Расстояние до тора
+                        float distanceToTorus = q.magnitude - smallerRadius;
+                
+                        // Пороговое значение для вокселизации
+                        float voxelThreshold = 0.5f; // Можно регулировать
+                
+                        // Если точка достаточно близко к поверхности тора
+                        if (Mathf.Abs(distanceToTorus) <= voxelThreshold)
+                        {
+                            map[x, y, z] = true;
+                        }
                     }
                 }
             }

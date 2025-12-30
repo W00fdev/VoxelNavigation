@@ -1,4 +1,4 @@
-using System.Linq;
+using System;
 using Octrees;
 using Pathfinding;
 using UnityEngine;
@@ -19,12 +19,35 @@ namespace DefaultNamespace
         Vector3 _destination;
         AStarGraph _aStarGraph;
 
-        public void Go()
+        public void GoRandom()
         {
             _aStarGraph = _octreeGenerator.waypoints;
             _currentNode = GetClosestNode(transform.position);
 
             GetRandomDestination();
+        }
+
+        public void Go(Vector3 from, Vector3 to)
+        {
+            transform.position = from;
+
+            _aStarGraph = _octreeGenerator.waypoints;
+
+            _currentNode = GetClosestNode(from);
+            OctreeNode destinationNode = GetClosestNode(to);
+            if (!_aStarGraph.AStar(_currentNode, destinationNode))
+            {
+                throw new Exception("Can't find a path");
+            }
+
+            for (var index = 0; index < _aStarGraph.pathList.Count; index++)
+            {
+                Node pathNode = _aStarGraph.pathList[index];
+                UnityEngine.Debug.Log($"#{Time.frameCount}: i{index} -- g: {pathNode.g}");
+            }
+
+            _currentWaypoint = 0;
+            _pathLength = _currentWaypoint;
         }
 
         void Update()
@@ -33,7 +56,7 @@ namespace DefaultNamespace
                 return;
 
             if (_aStarGraph.GetPathLength() == 0
-             || _currentWaypoint >= _aStarGraph.GetPathLength())
+                || _currentWaypoint >= _aStarGraph.GetPathLength())
             {
                 _currentNode = GetClosestNode(transform.position);
                 GetRandomDestination();
@@ -42,10 +65,10 @@ namespace DefaultNamespace
 
             if (Vector3.Distance(
                     _aStarGraph.GetPathNode(_currentWaypoint)
-                       .bounds.center,
+                        .bounds.center,
                     transform.position
                 )
-              < _accuracy)
+                < _accuracy)
             {
                 _currentWaypoint++;
                 _pathLength = _currentWaypoint;
@@ -99,14 +122,13 @@ namespace DefaultNamespace
 
             do
             {
-                Vector3 RandomPosition = new Vector3(Random.Range(0, _octreeGenerator.MapSize.x), Random.Range(0, _octreeGenerator.MapSize.y), Random.Range(0, _octreeGenerator.MapSize.z));
+                Vector3 RandomPosition = new Vector3(Random.Range(0, _octreeGenerator.MapSize.x),
+                    Random.Range(0, _octreeGenerator.MapSize.y), Random.Range(0, _octreeGenerator.MapSize.z));
                 destinationNode = GetClosestNode(RandomPosition);
 
 /*                    destinationNode = _aStarGraph.nodes.ElementAt(Random.Range(0, _aStarGraph.nodes.Count))
                        .Key;*/
-
-            }
-            while (!_aStarGraph.AStar(_currentNode, destinationNode));
+            } while (!_aStarGraph.AStar(_currentNode, destinationNode));
 
             _currentWaypoint = 0;
             _pathLength = _currentWaypoint;
@@ -122,7 +144,7 @@ namespace DefaultNamespace
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(_aStarGraph.GetPathNode(_aStarGraph.GetPathLength() - 1).bounds.center, 0.85f);
 
-            Gizmos.color = Color.green;
+            Gizmos.color = Color.magenta;
             for (int i = 0; i < _aStarGraph.GetPathLength(); i++)
             {
                 Gizmos.DrawWireSphere(_aStarGraph.GetPathNode(i).bounds.center, 0.5f);

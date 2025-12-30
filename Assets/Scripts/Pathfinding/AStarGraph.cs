@@ -9,15 +9,17 @@ namespace Pathfinding
 {
     public class AStarGraph
     {
-        const int MaxIterations = 1000;
+        const int MaxIterations = 10000;
 
         public HashSet<Edge> edges => _edges;
         public Dictionary<OctreeNode, Node> nodes => _nodes;
         public List<Node> pathList => _pathList;
+        public long actionsTaken => _actionsTaken;
 
         readonly Dictionary<OctreeNode, Node> _nodes = new();
         readonly List<Node> _pathList = new();
         readonly HashSet<Edge> _edges = new();
+        long _actionsTaken;
         Camera _mainCamera;
 
         public AStarGraph() { }
@@ -59,7 +61,6 @@ namespace Pathfinding
             SortedSet<Node> openSet = new(new NodeComparer());
             HashSet<Node> closedSet = new();
             int iterationCount = 0;
-            long actionsTaken = 0L;
 
             start.g = 0;
             start.h = Heuristic(start, end);
@@ -82,7 +83,7 @@ namespace Pathfinding
                 {
                     ReconstructPath(current);
 
-                    Debug.Log($"#{Time.frameCount}: path size -- {_pathList.Count}; actionsTaken -- {actionsTaken}");
+                    Debug.Log($"#{Time.frameCount}: path size -- {_pathList.Count}; actionsTaken -- {_actionsTaken}");
 
                     return true;
                 }
@@ -103,7 +104,7 @@ namespace Pathfinding
 
                     float tentative_gScore = current.g + Heuristic(current, neighbor);
 
-                    actionsTaken++;
+                    _actionsTaken++;
 
                     if (tentative_gScore < neighbor.g
                      || !openSet.Contains(neighbor))
@@ -132,7 +133,7 @@ namespace Pathfinding
             pathList.Reverse();
         }
 
-        float Heuristic(Node a, Node b) => (a.octreeNode.bounds.center - b.octreeNode.bounds.center).sqrMagnitude;
+        float Heuristic(Node a, Node b) => (a.octreeNode.bounds.center - b.octreeNode.bounds.center).magnitude;
 
         public class NodeComparer : IComparer<Node>
         {
