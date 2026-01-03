@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Octrees;
 using Pathfinding;
 using UnityEngine;
@@ -6,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace DefaultNamespace
 {
-    public class Mover : MonoBehaviour
+    public class GridMover : MonoBehaviour
     {
         [SerializeField] OctreeGenerator _octreeGenerator;
         [SerializeField] float _speed = 10;
@@ -15,13 +16,13 @@ namespace DefaultNamespace
         [field: SerializeField] float _pathLength { get; set; }
 
         int _currentWaypoint;
-        OctreeNode _currentNode;
+        GridNode _currentNode;
         Vector3 _destination;
-        AStarGraph _aStarGraph;
+        AStarGrid _aStarGrid;
 
         public void GoRandom()
         {
-            _aStarGraph = _octreeGenerator.aStarGraph;
+            _aStarGrid = _octreeGenerator.aStarGrid;
             _currentNode = GetClosestNode(transform.position);
 
             GetRandomDestination();
@@ -31,18 +32,18 @@ namespace DefaultNamespace
         {
             transform.position = from;
 
-            _aStarGraph = _octreeGenerator.aStarGraph;
+            _aStarGrid = _octreeGenerator.aStarGrid;
 
             _currentNode = GetClosestNode(from);
-            OctreeNode destinationNode = GetClosestNode(to);
-            if (!_aStarGraph.AStar(_currentNode, destinationNode))
+            GridNode destinationNode = GetClosestNode(to);
+            if (!_aStarGrid.AStar(_currentNode, destinationNode))
             {
                 throw new Exception("Can't find a path");
             }
 
-            for (var index = 0; index < _aStarGraph.pathList.Count; index++)
+            for (var index = 0; index < _aStarGrid.pathList.Count; index++)
             {
-                Node pathNode = _aStarGraph.pathList[index];
+                GridNode pathNode = _aStarGrid.pathList[index];
                 UnityEngine.Debug.Log($"#{Time.frameCount}: i{index} -- g: {pathNode.g}");
             }
 
@@ -52,11 +53,11 @@ namespace DefaultNamespace
 
         void Update()
         {
-            if (_aStarGraph == null)
+            if (_aStarGrid == null)
                 return;
 
-            if (_aStarGraph.GetPathLength() == 0
-                || _currentWaypoint >= _aStarGraph.GetPathLength())
+            if (_aStarGrid.GetPathLength() == 0
+                || _currentWaypoint >= _aStarGrid.GetPathLength())
             {
                 _currentNode = GetClosestNode(transform.position);
                 GetRandomDestination();
@@ -64,8 +65,8 @@ namespace DefaultNamespace
             }
 
             if (Vector3.Distance(
-                    _aStarGraph.GetPathNode(_currentWaypoint)
-                        .bounds.center,
+                    _aStarGrid.GetPathNode(_currentWaypoint)
+                        .position,
                     transform.position
                 )
                 < _accuracy)
@@ -74,10 +75,10 @@ namespace DefaultNamespace
                 _pathLength = _currentWaypoint;
             }
 
-            if (_currentWaypoint < _aStarGraph.GetPathLength())
+            if (_currentWaypoint < _aStarGrid.GetPathLength())
             {
-                _currentNode = _aStarGraph.GetPathNode(_currentWaypoint);
-                _destination = _currentNode.bounds.center;
+                _currentNode = _aStarGrid.GetPathNode(_currentWaypoint);
+                _destination = _currentNode.position;
 
                 Vector3 direction = _destination - transform.position;
                 direction.Normalize();
@@ -96,15 +97,19 @@ namespace DefaultNamespace
             }
         }
 
-        OctreeNode GetClosestNode(Vector3 position)
+        GridNode GetClosestNode(Vector3 position)
         {
-            OctreeNode closestNode = null;
+            // change to normal finding
+            var intPosition = new Vector3Int(Mathf.CeilToInt(position.x), Mathf.CeilToInt(position.y),
+                Mathf.CeilToInt(position.z));
+
+            GridNode closestNode = null;
             float closestDistanceSqr = Mathf.Infinity;
 
-            foreach (var kvNode in _aStarGraph.nodes)
+            foreach (var kvNode in _aStarGrid.nodes)
             {
-                OctreeNode node = kvNode.Key;
-                float distanceSqr = (node.bounds.center - position).sqrMagnitude;
+                GridNode node = kvNode.Value;
+                float distanceSqr = (node.position - position).sqrMagnitude;
 
                 if (distanceSqr < closestDistanceSqr)
                 {
@@ -118,17 +123,19 @@ namespace DefaultNamespace
 
         void GetRandomDestination()
         {
-            OctreeNode destinationNode;
+            GridNode destinationNode;
 
             do
             {
+                /*
                 Vector3 RandomPosition = new Vector3(Random.Range(0, _octreeGenerator.MapSize.x),
                     Random.Range(0, _octreeGenerator.MapSize.y), Random.Range(0, _octreeGenerator.MapSize.z));
                 destinationNode = GetClosestNode(RandomPosition);
+                */
 
-/*                    destinationNode = _aStarGraph.nodes.ElementAt(Random.Range(0, _aStarGraph.nodes.Count))
-                       .Key;*/
-            } while (!_aStarGraph.AStar(_currentNode, destinationNode));
+                destinationNode = _aStarGrid.nodes.ElementAt(Random.Range(0, _aStarGrid.nodes.Count))
+                    .Value;
+            } while (!_aStarGrid.AStar(_currentNode, destinationNode));
 
             _currentWaypoint = 0;
             _pathLength = _currentWaypoint;
@@ -136,22 +143,22 @@ namespace DefaultNamespace
 
         private void OnDrawGizmos()
         {
-            if (_aStarGraph == null || _aStarGraph.GetPathLength() == 0) return;
+            if (_aStarGrid == null || _aStarGrid.GetPathLength() == 0) return;
 
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(_aStarGraph.GetPathNode(0).bounds.center, 0.7f);
+            Gizmos.DrawWireSphere(_aStarGrid.GetPathNode(0).position, 0.7f);
 
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(_aStarGraph.GetPathNode(_aStarGraph.GetPathLength() - 1).bounds.center, 0.85f);
+            Gizmos.DrawWireSphere(_aStarGrid.GetPathNode(_aStarGrid.GetPathLength() - 1).position, 0.85f);
 
             Gizmos.color = Color.magenta;
-            for (int i = 0; i < _aStarGraph.GetPathLength(); i++)
+            for (int i = 0; i < _aStarGrid.GetPathLength(); i++)
             {
-                Gizmos.DrawWireSphere(_aStarGraph.GetPathNode(i).bounds.center, 0.5f);
-                if (i < _aStarGraph.GetPathLength() - 1)
+                Gizmos.DrawWireSphere(_aStarGrid.GetPathNode(i).position, 0.5f);
+                if (i < _aStarGrid.GetPathLength() - 1)
                 {
-                    Vector3 start = _aStarGraph.GetPathNode(i).bounds.center;
-                    Vector3 end = _aStarGraph.GetPathNode(i + 1).bounds.center;
+                    Vector3 start = _aStarGrid.GetPathNode(i).position;
+                    Vector3 end = _aStarGrid.GetPathNode(i + 1).position;
                     Gizmos.DrawLine(start, end);
                 }
             }

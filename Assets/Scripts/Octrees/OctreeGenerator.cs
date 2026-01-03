@@ -1,4 +1,5 @@
 using System.Collections;
+using DefaultNamespace;
 using DefaultNamespace.Statistics;
 using Map;
 using Pathfinding;
@@ -13,15 +14,18 @@ namespace Octrees
         public Vector3Int MapSize => _mapSize;
         const float MinNodeSize = 1f;
 
-        public AStarGraph waypoints => _waypoints;
+        public AStarGraph aStarGraph => _aStarGraph;
+        public AStarGrid aStarGrid => _aStarGrid;
 
         [SerializeField] MapDrawer _mapDrawer;
         [SerializeField] MapReader _mapReader;
         [SerializeField] AStarBenchmark _aStarBenchmark;
+        [SerializeField] GridMover _gridMover;
         //[SerializeField] DefaultNamespace.Mover _mover;
 
         NativeArray<float3> _positions;
-        readonly AStarGraph _waypoints = new();
+        readonly AStarGraph _aStarGraph = new();
+        AStarGrid _aStarGrid;
         Octree _ot;
         Vector3Int _mapSize;
 
@@ -33,6 +37,7 @@ namespace Octrees
             //bool[,,] voxels = MapGenerator.GenerateTube();
 
             _mapSize = new Vector3Int(voxels.GetLength(0), voxels.GetLength(1), voxels.GetLength(2));
+            //_aStarGrid = new AStarGrid(_mapSize);
 
             //bool[,,] voxels = MapGenerator.CreateEmptyMap(_mapSize);
             ShapesFactory.CreateSphere(ref voxels, new Vector3Int(34, 54, 54), 15);
@@ -53,6 +58,22 @@ namespace Octrees
 
             MapCuller.Cull(ref voxels, out totalFilledVoxelsCount);
 
+            /*totalFilledVoxelsCount = 0;
+            for (int x = 0; x < _mapSize.x; x++)
+            {
+                for (int y = 0; y < _mapSize.y; y++)
+                {
+                    for (int z = 0; z < _mapSize.z; z++)
+                    {
+                        if (!voxels[x, y, z])
+                        {
+                            _aStarGrid.AddNode(new GridNode(new Vector3Int(x, y, z)));
+                            totalFilledVoxelsCount++;
+                        }
+                    }
+                }
+            }*/
+            
             _mapDrawer.Redraw(
                 voxels,
                 totalFilledVoxelsCount,
@@ -63,13 +84,35 @@ namespace Octrees
 
             _positions = TransformMatrixArrayFactory.CreatePositionsFromVoxels(totalFilledVoxelsCount, voxels);
 
-            _ot = new Octree(ref _positions, MinNodeSize, _waypoints);
+            _ot = new Octree(ref _positions, MinNodeSize, _aStarGraph);
 
             yield return null;
             yield return null;
-            _aStarBenchmark.GoCheckWithMover(115);
+            //_aStarBenchmark.GoCheckWithMover(115);
             //_aStarBenchmark.Go();
             //_mover.Go();
+
+            /*for (int x = 0; x < _mapSize.x; x++)
+            {
+                for (int y = 0; y < _mapSize.y; y++)
+                {
+                    for (int z = 0; z < _mapSize.z; z++)
+                    {
+                        if (!voxels[x, y, z])
+                        {
+                            _aStarGrid.AddNode(new GridNode(new Vector3Int(x, y, z)));
+                            totalFilledVoxelsCount++;
+                        }
+                    }
+                }
+            }*/
+
+            UnityEngine.Debug.Log($"#{Time.frameCount}: since startup {Time.realtimeSinceStartup}");
+
+            //_gridMover.GoRandom();
+            _aStarBenchmark.GoGraph();
+            //_aStarBenchmark.GoGrid();
+            //_aStarBenchmark.ExploreBenchmarkAt(13);
         }
 
         void OnDestroy()
@@ -79,14 +122,17 @@ namespace Octrees
 
         void OnDrawGizmos()
         {
-            if (_ot == null)
-                return;
-
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(_ot.bounds.center, _mapSize);
 
-            _ot.root.DrawNode();
-            _ot.aStarGraph.DrawGraph();
+            if (_ot != null)
+            {
+                Gizmos.DrawWireCube(_ot.bounds.center, _mapSize);
+
+                _ot.root.DrawNode();
+                _ot.aStarGraph.DrawGraph();
+            }
+
+            _aStarGrid?.DrawGraph();
         }
     }
 }

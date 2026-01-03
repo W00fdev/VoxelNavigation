@@ -41,10 +41,6 @@ namespace Map
 
 							if (voxels[x, y, z])
 								totalFilledVoxelsCount++;
-							else
-							{
-								UnityEngine.Debug.Log("Voxel culled");
-							}
 						}
                     }
                 }

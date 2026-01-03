@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Octrees;
 
 namespace Pathfinding
 {
-    public class Node
+    public class Node : IEquatable<Node>
     {
         public int id => _id;
         public OctreeNode octreeNode => _octreeNode;
@@ -26,14 +27,19 @@ namespace Pathfinding
             _octreeNode = octreeNode;
         }
 
+        public bool Equals(Node other)
+        {
+            return other != null && id == other.id;
+        }
+
         public override bool Equals(object obj)
         {
-            return obj is Node other && _id == other.id;
+            return obj is Node other && Equals(other);
         }
 
         public override int GetHashCode()
         {
-            return _id.GetHashCode();
+            return _id;
         }
     }
 }

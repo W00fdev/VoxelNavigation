@@ -16,6 +16,9 @@ namespace Tools
 
             if (GUILayout.Button("Показать вершины графа пути"))
                 GizmosTools.ShowGraphNodes = !GizmosTools.ShowGraphNodes;
+            
+            if (GUILayout.Button("Показать последний путь"))
+                GizmosTools.ShowLastPathGraphNodes = !GizmosTools.ShowLastPathGraphNodes;
 
             GUILayout.Label($"Дальность отрисовки гизмо: {GizmosTools.DrawDistance:F2}");
             GizmosTools.DrawDistance = GUILayout.HorizontalSlider(GizmosTools.DrawDistance, 0f, 50000f);
