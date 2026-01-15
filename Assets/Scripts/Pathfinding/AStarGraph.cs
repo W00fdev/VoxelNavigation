@@ -10,16 +10,16 @@ namespace Pathfinding
     {
         const int MaxIterations = 10000;
 
-        public HashSet<Edge> edges => _edges;
-        public Dictionary<OctreeNode, Node> nodes => _nodes;
-        public List<Node> pathList => _pathList;
+        public HashSet<AStarEdge> edges => _edges;
+        public Dictionary<OctreeNode, AStarNode> nodes => _nodes;
+        public List<AStarNode> pathList => _pathList;
         public long actionsTaken => _actionsTaken;
 
-        readonly Dictionary<OctreeNode, Node> _nodes = new();
-        readonly List<Node> _pathList = new();
-        readonly HashSet<Edge> _edges = new();
-        HashSet<Node> _closedSet = new();
-        SortedSet<Node> _openSet = new(new NodeComparer());
+        readonly Dictionary<OctreeNode, AStarNode> _nodes = new();
+        readonly List<AStarNode> _pathList = new();
+        readonly HashSet<AStarEdge> _edges = new();
+        HashSet<AStarNode> _closedSet = new();
+        SortedSet<AStarNode> _openSet = new(new NodeComparer());
         long _actionsTaken;
         Camera _mainCamera;
 
@@ -47,8 +47,8 @@ namespace Pathfinding
         {
             _pathList.Clear();
 
-            Node start = FindNode(startNode);
-            Node end = FindNode(endNode);
+            AStarNode start = FindNode(startNode);
+            AStarNode end = FindNode(endNode);
 
             if (start == null
                 || end == null)
@@ -75,7 +75,7 @@ namespace Pathfinding
                     return false;
                 }
 
-                Node current = _openSet.First();
+                AStarNode current = _openSet.First();
                 _openSet.Remove(current);
 
                 if (current.Equals(end))
@@ -89,9 +89,9 @@ namespace Pathfinding
 
                 _closedSet.Add(current);
 
-                foreach (Edge edge in current.edges)
+                foreach (AStarEdge edge in current.edges)
                 {
-                    Node neighbor = Equals(edge.a, current)
+                    AStarNode neighbor = Equals(edge.a, current)
                         ? edge.b
                         : edge.a;
 
@@ -121,7 +121,7 @@ namespace Pathfinding
             return false;
         }
 
-        void ReconstructPath(Node current)
+        void ReconstructPath(AStarNode current)
         {
             while (current != null)
             {
@@ -132,7 +132,7 @@ namespace Pathfinding
             pathList.Reverse();
         }
 
-        float Heuristic(Node a, Node b) => (a.octreeNode.bounds.center - b.octreeNode.bounds.center).sqrMagnitude;
+        float Heuristic(AStarNode a, AStarNode b) => (a.octreeNode.bounds.center - b.octreeNode.bounds.center).sqrMagnitude;
 
         /*float Heuristic(Node a, Node b)
         {
@@ -151,9 +151,9 @@ namespace Pathfinding
             return (1.7f - 1.4f) * dMin + (1.4f - 1f) * dMid + dMax;
         }*/
         
-        public class NodeComparer : IComparer<Node>
+        public class NodeComparer : IComparer<AStarNode>
         {
-            public int Compare(Node x, Node y)
+            public int Compare(AStarNode x, AStarNode y)
             {
                 if (x == null
                     || y == null)
@@ -174,20 +174,20 @@ namespace Pathfinding
         {
             if (!_nodes.ContainsKey(octreeNode))
             {
-                _nodes.Add(octreeNode, new Node(octreeNode));
+                _nodes.Add(octreeNode, new AStarNode(octreeNode));
             }
         }
 
         public void AddEdge(OctreeNode a, OctreeNode b)
         {
-            Node nodeA = FindNode(a);
-            Node nodeB = FindNode(b);
+            AStarNode nodeA = FindNode(a);
+            AStarNode nodeB = FindNode(b);
 
             if (nodeA == null
                 || nodeB == null)
                 return;
 
-            var edge = new Edge(nodeA, nodeB);
+            var edge = new AStarEdge(nodeA, nodeB);
 
             if (_edges.Add(edge))
             {
@@ -207,7 +207,7 @@ namespace Pathfinding
 
             if (GizmosTools.ShowGraphEdges)
             {
-                foreach (Edge edge in _edges)
+                foreach (AStarEdge edge in _edges)
                 {
                     if (edge.GetMaxDistance(_mainCamera.transform.position) <= GizmosTools.DrawDistance)
                     {
@@ -218,7 +218,7 @@ namespace Pathfinding
 
             if (GizmosTools.ShowGraphNodes)
             {
-                foreach (Node node in _nodes.Values)
+                foreach (AStarNode node in _nodes.Values)
                 {
                     float distanceFromCamera = Vector3.Distance(
                         node.octreeNode.bounds.center,
@@ -234,7 +234,7 @@ namespace Pathfinding
             
             if (GizmosTools.ShowLastPathGraphNodes)
             {
-                foreach (Node node in _closedSet)
+                foreach (AStarNode node in _closedSet)
                 {
                     float distanceFromCamera = Vector3.Distance(
                         node.octreeNode.bounds.center,
@@ -247,7 +247,7 @@ namespace Pathfinding
                     }
                 }
 
-                foreach (Node node in _openSet)
+                foreach (AStarNode node in _openSet)
                 {
                     float distanceFromCamera = Vector3.Distance(
                         node.octreeNode.bounds.center,
@@ -264,9 +264,9 @@ namespace Pathfinding
             }
         }
 
-        Node FindNode(OctreeNode octreeNode)
+        AStarNode FindNode(OctreeNode octreeNode)
         {
-            _nodes.TryGetValue(octreeNode, out Node node);
+            _nodes.TryGetValue(octreeNode, out AStarNode node);
             return node;
         }
     }

@@ -4,37 +4,37 @@ using Octrees;
 
 namespace Pathfinding
 {
-    public class Node : IEquatable<Node>
+    public class AStarNode : IEquatable<AStarNode>
     {
         public int id => _id;
         public OctreeNode octreeNode => _octreeNode;
-        public List<Edge> edges => _edges;
+        public List<AStarEdge> edges => _edges;
 
         public float f;
         public float g;
         public float h;
-        public Node from;
+        public AStarNode from;
 
         readonly int _id;
         readonly OctreeNode _octreeNode;
-        readonly List<Edge> _edges = new();
+        readonly List<AStarEdge> _edges = new();
 
         static int _nextId;
 
-        public Node(OctreeNode octreeNode)
+        public AStarNode(OctreeNode octreeNode)
         {
             _id = _nextId++;
             _octreeNode = octreeNode;
         }
 
-        public bool Equals(Node other)
+        public bool Equals(AStarNode other)
         {
             return other != null && id == other.id;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is Node other && Equals(other);
+            return obj is AStarNode other && Equals(other);
         }
 
         public override int GetHashCode()

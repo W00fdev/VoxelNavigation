@@ -4,11 +4,10 @@ using Pathfinding;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace DefaultNamespace
+namespace Root
 {
-    public class Mover : MonoBehaviour
+    public class GraphMover : MonoBehaviour
     {
-        [SerializeField] OctreeGenerator _octreeGenerator;
         [SerializeField] float _speed = 10;
         [SerializeField] float _accuracy = 3f;
         [SerializeField] float _turnSpeed = 10;
@@ -18,20 +17,24 @@ namespace DefaultNamespace
         OctreeNode _currentNode;
         Vector3 _destination;
         AStarGraph _aStarGraph;
+        Vector3Int _mapSize;
+
+        public void Initialize(AStarGraph aStarGraph, Vector3Int mapSize)
+        {
+            _aStarGraph = aStarGraph;
+            _mapSize = mapSize;
+        }
 
         public void GoRandom()
         {
-            _aStarGraph = _octreeGenerator.aStarGraph;
             _currentNode = GetClosestNode(transform.position);
 
             GetRandomDestination();
         }
-
+        
         public void Go(Vector3 from, Vector3 to)
         {
             transform.position = from;
-
-            _aStarGraph = _octreeGenerator.aStarGraph;
 
             _currentNode = GetClosestNode(from);
             OctreeNode destinationNode = GetClosestNode(to);
@@ -42,7 +45,7 @@ namespace DefaultNamespace
 
             for (var index = 0; index < _aStarGraph.pathList.Count; index++)
             {
-                Node pathNode = _aStarGraph.pathList[index];
+                AStarNode pathNode = _aStarGraph.pathList[index];
                 UnityEngine.Debug.Log($"#{Time.frameCount}: i{index} -- g: {pathNode.g}");
             }
 
@@ -122,8 +125,8 @@ namespace DefaultNamespace
 
             do
             {
-                Vector3 RandomPosition = new Vector3(Random.Range(0, _octreeGenerator.MapSize.x),
-                    Random.Range(0, _octreeGenerator.MapSize.y), Random.Range(0, _octreeGenerator.MapSize.z));
+                Vector3 RandomPosition = new Vector3(Random.Range(0, _mapSize.x),
+                    Random.Range(0, _mapSize.y), Random.Range(0, _mapSize.z));
                 destinationNode = GetClosestNode(RandomPosition);
 
 /*                    destinationNode = _aStarGraph.nodes.ElementAt(Random.Range(0, _aStarGraph.nodes.Count))

@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b69fe20eb494a2984dbd2357693f566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _octreeGenerator: {fileID: 1075148776}
   _speed: 10
   _accuracy: 3
   _turnSpeed: 10
@@ -215,6 +216,189 @@ Transform:
   - {fileID: 1524381112}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &309080698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 309080700}
+  - component: {fileID: 309080699}
+  - component: {fileID: 309080701}
+  m_Layer: 0
+  m_Name: DLiteBenchmarking
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &309080699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309080698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36d4f0c01903472cb03b6978ec61f23a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _source: {fileID: 1672850673}
+  _benchmarkTests:
+  - {fileID: 1672850672}
+  - {fileID: 1672850671}
+  - {fileID: 1672850670}
+  - {fileID: 1672850669}
+  - {fileID: 1672850668}
+  - {fileID: 1672850667}
+  - {fileID: 1672850666}
+  - {fileID: 1672850665}
+  - {fileID: 1672850664}
+  - {fileID: 1672850663}
+  - {fileID: 1672850662}
+  - {fileID: 1672850661}
+  - {fileID: 1672850660}
+  - {fileID: 1672850659}
+  - {fileID: 1672850658}
+  - {fileID: 1672850657}
+  - {fileID: 1672850656}
+  - {fileID: 1672850655}
+  - {fileID: 1672850654}
+  - {fileID: 1672850653}
+  - {fileID: 1672850652}
+  - {fileID: 1672850651}
+  - {fileID: 1672850650}
+  - {fileID: 1672850649}
+  - {fileID: 1672850648}
+  - {fileID: 1672850647}
+  - {fileID: 1672850646}
+  - {fileID: 1672850645}
+  - {fileID: 1672850644}
+  - {fileID: 1672850643}
+  - {fileID: 1672850642}
+  - {fileID: 1672850641}
+  - {fileID: 1672850640}
+  - {fileID: 1672850639}
+  - {fileID: 1672850638}
+  - {fileID: 1672850637}
+  - {fileID: 1672850636}
+  - {fileID: 1672850635}
+  - {fileID: 1672850634}
+  - {fileID: 1672850633}
+  - {fileID: 1672850632}
+  - {fileID: 1672850631}
+  - {fileID: 1672850630}
+  - {fileID: 1672850629}
+  - {fileID: 1672850628}
+  - {fileID: 1672850627}
+  - {fileID: 1672850626}
+  - {fileID: 1672850625}
+  - {fileID: 1672850624}
+  - {fileID: 1672850623}
+  - {fileID: 1672850622}
+  - {fileID: 1672850621}
+  - {fileID: 1672850620}
+  - {fileID: 1672850619}
+  - {fileID: 1672850618}
+  - {fileID: 1672850617}
+  - {fileID: 1672850616}
+  - {fileID: 1672850615}
+  - {fileID: 1672850614}
+  - {fileID: 1672850613}
+  - {fileID: 1672850612}
+  - {fileID: 1672850611}
+  - {fileID: 1672850610}
+  - {fileID: 1672850609}
+  - {fileID: 1672850608}
+  - {fileID: 1672850607}
+  - {fileID: 1672850606}
+  - {fileID: 1672850605}
+  - {fileID: 1672850604}
+  - {fileID: 1672850603}
+  - {fileID: 1672850602}
+  - {fileID: 1672850601}
+  - {fileID: 1672850600}
+  - {fileID: 1672850599}
+  - {fileID: 1672850598}
+  - {fileID: 1672850597}
+  - {fileID: 1672850596}
+  - {fileID: 1672850595}
+  - {fileID: 1672850594}
+  - {fileID: 1672850593}
+  - {fileID: 1672850592}
+  - {fileID: 1672850591}
+  - {fileID: 1672850590}
+  - {fileID: 1672850589}
+  - {fileID: 1672850588}
+  - {fileID: 1672850587}
+  - {fileID: 1672850586}
+  - {fileID: 1672850585}
+  - {fileID: 1672850584}
+  - {fileID: 1672850583}
+  - {fileID: 1672850582}
+  - {fileID: 1672850581}
+  - {fileID: 1672850580}
+  - {fileID: 1672850579}
+  - {fileID: 1672850578}
+  - {fileID: 1672850577}
+  - {fileID: 1672850576}
+  - {fileID: 1672850575}
+  - {fileID: 1672850574}
+  - {fileID: 1672850573}
+  - {fileID: 1672850572}
+  - {fileID: 1672850571}
+  - {fileID: 1672850570}
+  - {fileID: 1672850569}
+  - {fileID: 1672850568}
+  - {fileID: 1672850567}
+  - {fileID: 1672850566}
+  - {fileID: 1672850565}
+  - {fileID: 1672850564}
+  - {fileID: 1672850563}
+  - {fileID: 1672850562}
+  - {fileID: 1672850561}
+  - {fileID: 1672850560}
+  - {fileID: 1672850559}
+  - {fileID: 1672850558}
+  - {fileID: 1672850557}
+  _octreeGenerator: {fileID: 1075148776}
+  _mover: {fileID: 1862356706}
+--- !u!4 &309080700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309080698}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &309080701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309080698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 901d0aec9a6212a458eb21613b04c9fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.Statistics.DLiteBenchmark
+  _source: {fileID: 1672850673}
+  _benchmarkTests:
+  - {fileID: 1672850672}
+  - {fileID: 1672850671}
+  _octreeGenerator: {fileID: 1075148776}
+  _mover: {fileID: 1862356706}
 --- !u!1 &501436735
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +598,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1075148775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1075148777}
+  - component: {fileID: 1075148776}
+  m_Layer: 0
+  m_Name: OctreeGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1075148776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075148775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dad6959241bf4b2487f1ff763348a770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Octrees.OctreeGenerator
+  _mapDrawer: {fileID: 253985165}
+  _mapReader: {fileID: 1366937369}
+  _aStarBenchmark: {fileID: 1238377860}
+  _dLiteBenchmark: {fileID: 309080701}
+  _gridMover: {fileID: 294163545}
+--- !u!4 &1075148777
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075148775}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1238377858
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +658,7 @@ GameObject:
   - component: {fileID: 1238377859}
   - component: {fileID: 1238377860}
   m_Layer: 0
-  m_Name: AStarBenchmark
+  m_Name: AStarBenchmarking
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -576,6 +809,7 @@ MonoBehaviour:
   - {fileID: 1672850559}
   - {fileID: 1672850558}
   - {fileID: 1672850557}
+  _octreeGenerator: {fileID: 1075148776}
   _mover: {fileID: 1862356706}
 --- !u!1 &1366937367
 GameObject:
@@ -734,54 +968,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1524381111}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1545070665
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1545070667}
-  - component: {fileID: 1545070666}
-  m_Layer: 0
-  m_Name: Bootstrap
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1545070666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1545070665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e240318e7c06f64f8fef4725fc7dfc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.Bootstrap
-  _mapDrawer: {fileID: 253985165}
-  _mapReader: {fileID: 1366937369}
-  _aStarBenchmark: {fileID: 1238377860}
-  _gridMover: {fileID: 294163545}
---- !u!4 &1545070667
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1545070665}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 90.91715, y: -0, z: -208.4381}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1672850556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1689,9 +1875,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1862356705}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d17096940adde845a490ca75dd73fa2, type: 3}
+  m_Script: {fileID: 11500000, guid: 16d3b2edb10940a5883710f58988b847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.Mover
+  _octreeGenerator: {fileID: 1075148776}
   _speed: 10
   _accuracy: 3
   _turnSpeed: 10
@@ -1722,7 +1909,8 @@ SceneRoots:
   - {fileID: 253985166}
   - {fileID: 1862356707}
   - {fileID: 294163546}
+  - {fileID: 1075148777}
   - {fileID: 763527554}
   - {fileID: 1238377859}
+  - {fileID: 309080700}
   - {fileID: 1672850556}
-  - {fileID: 1545070667}

@@ -5,11 +5,10 @@ using Pathfinding;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace DefaultNamespace
+namespace Root
 {
     public class GridMover : MonoBehaviour
     {
-        [SerializeField] OctreeGenerator _octreeGenerator;
         [SerializeField] float _speed = 10;
         [SerializeField] float _accuracy = 3f;
         [SerializeField] float _turnSpeed = 10;
@@ -19,10 +18,16 @@ namespace DefaultNamespace
         GridNode _currentNode;
         Vector3 _destination;
         AStarGrid _aStarGrid;
+        Vector3Int _mapSize;
+
+        public void Initialize(AStarGrid aStarGrid, Vector3Int mapSize)
+        {
+            _aStarGrid = aStarGrid;
+            _mapSize = mapSize;
+        }
 
         public void GoRandom()
         {
-            _aStarGrid = _octreeGenerator.aStarGrid;
             _currentNode = GetClosestNode(transform.position);
 
             GetRandomDestination();
@@ -31,8 +36,6 @@ namespace DefaultNamespace
         public void Go(Vector3 from, Vector3 to)
         {
             transform.position = from;
-
-            _aStarGrid = _octreeGenerator.aStarGrid;
 
             _currentNode = GetClosestNode(from);
             GridNode destinationNode = GetClosestNode(to);

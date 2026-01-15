@@ -8,24 +8,29 @@ using UnityEngine;
 
 namespace Root.Statistics
 {
-    public class AStarBenchmark : MonoBehaviour
+    public class DLiteBenchmark : MonoBehaviour
     {
         [SerializeField] Transform _source;
         [SerializeField] List<Transform> _benchmarkTests;
         [SerializeField] GraphMover _mover;
 
         Vector3 _destination;
-        AStarGraph _aStarGraph;
-        AStarGrid _aStarGrid;
+        Octree _octree;
+        //AStarGrid _aStarGrid;
 
-        public void GoCheckWithMover(AStarGrid aStarGrid, int index)
+        public void Initialize(Octree octree)
+        {
+            _octree = octree;
+        }
+
+        public void GoCheckWithMover(int index)
         {
             _mover.Go(_source.position, _benchmarkTests[index].position);
         }
 
-        public void ExploreBenchmarkAt(AStarGrid aStarGrid, int index)
+/*        public void ExploreBenchmarkAt(int index)
         {
-            _aStarGrid = aStarGrid;
+            _aStarGrid = _octreeGenerator.aStarGrid;
 
             Vector3 benchmarkPosition = _benchmarkTests[index].position;
 
@@ -35,10 +40,12 @@ namespace Root.Statistics
             UnityEngine.Debug.Log($"#{Time.frameCount}: destination node pos: {destinationNode.position}");
 
             _aStarGrid.AStar(currentNode, destinationNode);
-        }
+        }*/
 
-        public void GoGrid()
+/*        public void GoGrid()
         {
+            _aStarGrid = _octreeGenerator.aStarGrid;
+
             GridNode currentNode = GetClosestGridNode(_source.position);
             GridNode prevNode = null;
 
@@ -85,50 +92,49 @@ namespace Root.Statistics
 
 
             performanceLogger.SaveToFile();
-        }
+        }*/
 
-        public void GoGraph(AStarGraph aStarGraph)
+        public void GoGraph()
         {
-            _aStarGraph = aStarGraph;
-
-            OctreeNode currentNode = GetClosestNode(_source.position);
-            OctreeNode prevNode = null;
+            DLiteGraph.Node startNode = GetClosestNode(_source.position);
+            DLiteGraph.Node prevNode = null;
 
             var performanceLogger = new PerformanceLogger($"performance_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
 
-            UnityEngine.Debug.Log($"#{Time.frameCount}: start benchmark AStar");
+            UnityEngine.Debug.Log($"#{Time.frameCount}: start benchmark D-Lite");
             foreach (Transform benchmarkTest in _benchmarkTests)
             {
-                OctreeNode destinationNode = GetClosestNode(benchmarkTest.position);
+                DLiteGraph.Node destinationNode = GetClosestNode(benchmarkTest.position);
+                DLiteGraph dLiteGraph = new(startNode, destinationNode);
+
                 performanceLogger.Start();
 
-                if (!_aStarGraph.AStar(currentNode, destinationNode))
-                {
-                    throw new Exception($"Can't find a benchmark path to: {destinationNode.bounds.center}");
-                }
+                dLiteGraph.Initialize();
+                dLiteGraph.ComputeShortestPath();
+                var path = dLiteGraph.GetPath();
 
                 performanceLogger.Stop();
 
                 float pathLength;
                 if (prevNode == null)
                 {
-                    pathLength = Vector3.Distance(_source.position, destinationNode.bounds.center);
+                    pathLength = Vector3.Distance(_source.position, destinationNode.position);
                 }
                 else
                 {
                     pathLength = 0f;
-                    for (int i = 1; i < _aStarGraph.GetPathLength(); i++)
+                    for (int i = 1; i < path.Count; i++)
                     {
-                        OctreeNode octreeNode = _aStarGraph.GetPathNode(i);
-                        OctreeNode prevOctreeNode = _aStarGraph.GetPathNode(i - 1);
+                        DLiteGraph.Node octreeNode = path[i];
+                        DLiteGraph.Node prevOctreeNode = path[i - 1];
 
                         // g in AStar is squaredDistance
-                        pathLength += (octreeNode.bounds.center - prevOctreeNode.bounds.center).magnitude;
+                        pathLength += (octreeNode.position - prevOctreeNode.position).magnitude;
                     }
 //                    pathLength = _aStarGraph.pathList.Last().g;
                 }
 
-                performanceLogger.LogPerformance(pathLength, _aStarGraph.GetPathLength(), _aStarGraph.actionsTaken);
+                performanceLogger.LogPerformance(pathLength, path.Count, dLiteGraph.actionsTaken);
 
                 prevNode = destinationNode;
 
@@ -136,11 +142,10 @@ namespace Root.Statistics
                     $"#{Time.frameCount}: ends pathfinding with: {performanceLogger.lastExecutionTimeMs} ms");
             }
 
-
             performanceLogger.SaveToFile();
         }
 
-        GridNode GetClosestGridNode(Vector3 position)
+/*        GridNode GetClosestGridNode(Vector3 position)
         {
             // change to normal finding
             var intPosition = new Vector3Int(Mathf.CeilToInt(position.x), Mathf.CeilToInt(position.y),
@@ -154,7 +159,7 @@ namespace Root.Statistics
             GridNode closestNode = null;
             float closestDistanceSqr = Mathf.Infinity;
 
-            foreach (var kvNode in _aStarGrid.nodes)
+            foreach (var kvNode in _dLiteGraph.allNodes)
             {
                 GridNode node = kvNode.Value;
                 float distanceSqr = (node.position - position).sqrMagnitude;
@@ -167,17 +172,16 @@ namespace Root.Statistics
             }
 
             return closestNode;
-        }
+        }*/
 
-        OctreeNode GetClosestNode(Vector3 position)
+        DLiteGraph.Node GetClosestNode(Vector3 position)
         {
-            OctreeNode closestNode = null;
+            DLiteGraph.Node closestNode = null;
             float closestDistanceSqr = Mathf.Infinity;
 
-            foreach (var kvNode in _aStarGraph.nodes)
+            foreach (DLiteGraph.Node node in DLiteGraph.octreeNodesMapper.Values)
             {
-                OctreeNode node = kvNode.Key;
-                float distanceSqr = (node.bounds.center - position).sqrMagnitude;
+                float distanceSqr = (node.position - position).sqrMagnitude;
 
                 if (distanceSqr < closestDistanceSqr)
                 {

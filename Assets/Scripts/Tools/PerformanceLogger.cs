@@ -31,7 +31,8 @@ namespace Tools
 
         public PerformanceLogger(string logFileName = "performance_log.csv")
         {
-            string logsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+            var myDocumentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string logsDirectory = Path.Combine(myDocumentsPath, "Pathfinding_Logs");
             Directory.CreateDirectory(logsDirectory);
 
             _stopwatch = new Stopwatch();

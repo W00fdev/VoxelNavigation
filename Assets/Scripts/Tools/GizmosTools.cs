@@ -7,6 +7,7 @@ namespace Tools
         public static bool ShowGraphEdges;
 
         public static bool ShowGraphNodes;
+        public static bool ShowFlowFields;
         public static bool ShowLastPathGraphNodes;
         public static float NodesRadius = 0.2f;
 

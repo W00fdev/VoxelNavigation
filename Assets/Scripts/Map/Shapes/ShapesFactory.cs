@@ -37,14 +37,14 @@ namespace Map
             int maxZ = Mathf.Min(depth - 1, Mathf.CeilToInt(center.z + radius));
 
             // bound by map
-            minX = Mathf.Clamp(minX, 0, width);
-            maxX = Mathf.Clamp(maxX, 0, width);
+            minX = Mathf.Clamp(minX, 0, width - 1);
+            maxX = Mathf.Clamp(maxX, 0, width - 1);
 
-            minY = Mathf.Clamp(minY, 0, height);
-            maxY = Mathf.Clamp(maxY, 0, height);
+            minY = Mathf.Clamp(minY, 0, height - 1);
+            maxY = Mathf.Clamp(maxY, 0, height - 1);
 
-            minZ = Mathf.Clamp(minZ, 0, depth);
-            maxZ = Mathf.Clamp(maxZ, 0, depth);
+            minZ = Mathf.Clamp(minZ, 0, depth - 1);
+            maxZ = Mathf.Clamp(maxZ, 0, depth - 1);
 
             float radiusSquared = Mathf.Pow(radius, 2f);
 
@@ -79,14 +79,14 @@ namespace Map
             int maxZ = Mathf.Min(depth - 1, Mathf.CeilToInt(center.z + bounds.z));
 
             // bound by map
-            minX = Mathf.Clamp(minX, 0, width);
-            maxX = Mathf.Clamp(maxX, 0, width);
+            minX = Mathf.Clamp(minX, 0, width - 1);
+            maxX = Mathf.Clamp(maxX, 0, width - 1);
 
-            minY = Mathf.Clamp(minY, 0, height);
-            maxY = Mathf.Clamp(maxY, 0, height);
+            minY = Mathf.Clamp(minY, 0, height - 1);
+            maxY = Mathf.Clamp(maxY, 0, height - 1);
 
-            minZ = Mathf.Clamp(minZ, 0, depth);
-            maxZ = Mathf.Clamp(maxZ, 0, depth);
+            minZ = Mathf.Clamp(minZ, 0, depth - 1);
+            maxZ = Mathf.Clamp(maxZ, 0, depth - 1);
 
             for (int x = minX; x <= maxX; x++)
             {
@@ -119,14 +119,14 @@ namespace Map
             int maxZ = Mathf.Min(depth - 1, Mathf.CeilToInt(center.z + outerBoundingRadius));
 
             // bound by map
-            minX = Mathf.Clamp(minX, 0, width);
-            maxX = Mathf.Clamp(maxX, 0, width);
+            minX = Mathf.Clamp(minX, 0, width - 1);
+            maxX = Mathf.Clamp(maxX, 0, width - 1);
 
-            minY = Mathf.Clamp(minY, 0, height);
-            maxY = Mathf.Clamp(maxY, 0, height);
+            minY = Mathf.Clamp(minY, 0, height - 1);
+            maxY = Mathf.Clamp(maxY, 0, height - 1);
 
-            minZ = Mathf.Clamp(minZ, 0, depth);
-            maxZ = Mathf.Clamp(maxZ, 0, depth);
+            minZ = Mathf.Clamp(minZ, 0, depth - 1);
+            maxZ = Mathf.Clamp(maxZ, 0, depth - 1);
 
             for (int x = minX; x <= maxX; x++)
             {
@@ -134,7 +134,7 @@ namespace Map
                 {
                     for (int z = minZ; z <= maxZ; z++)
                     {
-                        Vector3 p = new Vector3(x - center.x, y - center.y, z - center.z);
+                        Vector3 p = new(x - center.x, y - center.y, z - center.z);
                 
                         // Вычисляем расстояние в плоскости XZ
                         float distanceXZ = Mathf.Sqrt(p.x * p.x + p.z * p.z);
@@ -158,6 +158,53 @@ namespace Map
             }
         }
 
+        public static List<Vector3> CreateNoiseAt(ref bool[,,] map, Vector3Int center, Vector3Int bounds)
+        {
+            List<Vector3> addedVoxels = new();
+
+            int width = map.GetLength(0);
+            int height = map.GetLength(1);
+            int depth = map.GetLength(2);
+
+            int minX = Mathf.Max(0, Mathf.FloorToInt(center.x - bounds.x));
+            int maxX = Mathf.Min(width - 1, Mathf.CeilToInt(center.x + bounds.x));
+
+            int minY = Mathf.Max(0, Mathf.FloorToInt(center.y - bounds.y));
+            int maxY = Mathf.Min(height - 1, Mathf.CeilToInt(center.y + bounds.y));
+
+            int minZ = Mathf.Max(0, Mathf.FloorToInt(center.z - bounds.z));
+            int maxZ = Mathf.Min(depth - 1, Mathf.CeilToInt(center.z + bounds.z));
+
+            // bound by map
+            minX = Mathf.Clamp(minX, 0, width - 1);
+            maxX = Mathf.Clamp(maxX, 0, width - 1);
+
+            minY = Mathf.Clamp(minY, 0, height - 1);
+            maxY = Mathf.Clamp(maxY, 0, height - 1);
+
+            minZ = Mathf.Clamp(minZ, 0, depth - 1);
+            maxZ = Mathf.Clamp(maxZ, 0, depth - 1);
+
+            for (int x = minX; x <= maxX; x++)
+            {
+                for (int y = minY; y <= maxY; y++)
+                {
+                    for (int z = minZ; z <= maxZ; z++)
+                    {
+                        if (!map[x, y, z])
+                        {
+                            int u = x + z;
+                            int v = y + z;
+
+                            map[x, y, z] = Mathf.PerlinNoise(u, v) >= 0.5f;
+                            addedVoxels.Add(new Vector3(x, y, z));
+                        }
+                    }
+                }
+            }
+
+            return addedVoxels;
+        }
 
         public static void CreateWireFrameBox(ref bool[,,] map, Vector3Int center, Vector3Int bounds)
         {
@@ -176,14 +223,14 @@ namespace Map
             int maxZ = Mathf.Min(depth - 1, Mathf.CeilToInt(center.z + bounds.z));
 
             // bound by map
-            minX = Mathf.Clamp(minX, 0, width);
-            maxX = Mathf.Clamp(maxX, 0, width);
+            minX = Mathf.Clamp(minX, 0, width - 1);
+            maxX = Mathf.Clamp(maxX, 0, width - 1);
 
-            minY = Mathf.Clamp(minY, 0, height);
-            maxY = Mathf.Clamp(maxY, 0, height);
+            minY = Mathf.Clamp(minY, 0, height - 1);
+            maxY = Mathf.Clamp(maxY, 0, height - 1);
 
-            minZ = Mathf.Clamp(minZ, 0, depth);
-            maxZ = Mathf.Clamp(maxZ, 0, depth);
+            minZ = Mathf.Clamp(minZ, 0, depth - 1);
+            maxZ = Mathf.Clamp(maxZ, 0, depth - 1);
 
             for (int x = minX; x <= maxX; x++)
             {

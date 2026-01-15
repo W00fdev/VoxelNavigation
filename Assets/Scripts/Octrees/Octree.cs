@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Mathematics;
 using Pathfinding;
 using UnityEngine;
+using System.Linq;
 
 namespace Octrees
 {
@@ -12,15 +13,18 @@ namespace Octrees
         public OctreeNode root => _root;
         public Bounds bounds => _bounds;
         public AStarGraph aStarGraph => _aStarGraph;
+        public FlowFieldGraph flowFieldGraph => _flowFieldGraph;
 
         readonly AStarGraph _aStarGraph;
+        readonly FlowFieldGraph _flowFieldGraph;
         readonly List<OctreeNode> _emptyLeaves = new();
+
         Bounds _bounds;
         OctreeNode _root;
 
-        public Octree(ref NativeArray<float3> collisionPositions, float minNodeSize, AStarGraph aStarGraph)
+        public Octree(ref NativeArray<float3> collisionPositions, float minNodeSize, FlowFieldGraph flowFieldGraph)
         {
-            _aStarGraph = aStarGraph;
+            _flowFieldGraph = flowFieldGraph;
 
             CalculateBounds(ref collisionPositions);
             CreateTree(ref collisionPositions, minNodeSize);
@@ -45,7 +49,7 @@ namespace Octrees
                 $"!@! {Time.frameCount}: ends edges gathering (ticks={(thirdBenchmarkUtc - secondBenchmarkUtc).Ticks}) (duration = {(thirdBenchmarkUtc - secondBenchmarkUtc).Duration()}) (utc = {thirdBenchmarkUtc})"
             );
 
-            Debug.Log(aStarGraph.edges.Count);
+            Debug.Log(_flowFieldGraph.edges.Count);
         }
 
         void GetEdges()
@@ -63,7 +67,68 @@ namespace Octrees
 
                     if (leaf.bounds.Intersects(otherLeaf.bounds))
                     {
-                        _aStarGraph.AddEdge(leaf, otherLeaf);
+                        //_aStarGraph.AddEdge(leaf, otherLeaf);
+                        _flowFieldGraph.AddEdge(leaf, otherLeaf);
+                    }
+                }
+            }
+        }
+
+        public OctreeNode GetClosestNode(Vector3 position)
+        {
+            if (!root.bounds.Contains(position))
+            {
+                //throw new Exception("New position is out of root bounds");
+                Debug.LogWarning($"New position({position}) is out of root bounds");
+                return null;
+            }
+
+            OctreeNode targetNode = root;
+
+            while (!targetNode.isLeaf)
+            {
+                OctreeNode node = targetNode.children.FirstOrDefault(node => node.bounds.Contains(position));
+
+                if (node == null)
+                    break;
+
+                targetNode = node;
+            }
+
+            return targetNode;
+        }
+
+        public void AddPosition(Vector3 position)
+        {
+            OctreeNode node = GetClosestNode(position);
+            if (node == null)
+                return;
+
+            OctreeObject nodeObject = node.parent.objects.FirstOrDefault(@object => @object.Intersects(node.bounds));
+            nodeObject ??= new OctreeObject(position);
+
+            //flowFieldGraph.RemoveNode(node);
+
+            HashSet<OctreeNode> newNodes = new();
+
+            node.Divide(nodeObject, ref newNodes);
+
+            HashSet<OctreeNode> addedLeaves = new();
+            foreach (OctreeNode newNode in newNodes)
+            {
+                GetEmptyLeavesWithMemory(newNode, ref addedLeaves);
+            }
+
+            // hashet ребра не перебирать все таки? или сделать метод для всех
+
+            foreach (OctreeNode leaf in addedLeaves)
+            {
+                foreach (OctreeNode otherLeaf in addedLeaves)
+                {
+                    if (leaf.bounds.Intersects(otherLeaf.bounds))
+                    {
+                        //_aStarGraph.AddEdge(leaf, otherLeaf);
+                        _flowFieldGraph.AddEdge(leaf, otherLeaf);
                     }
                 }
             }
@@ -89,13 +154,35 @@ namespace Octrees
             }
         }*/
 
+        void GetEmptyLeavesWithMemory(OctreeNode octreeNode, ref HashSet<OctreeNode> addedLeaves)
+        {
+            if (octreeNode.isLeaf
+             && octreeNode.objects.Count == 0)
+            {
+                _emptyLeaves.Add(octreeNode);
+                _flowFieldGraph.AddNode(octreeNode);
+
+                addedLeaves.Add(octreeNode);
+
+                return;
+            }
+
+            if (octreeNode.children == null)
+                return;
+
+            foreach (OctreeNode octreeNodeChild in octreeNode.children)
+            {
+                GetEmptyLeavesWithMemory(octreeNodeChild, ref addedLeaves);
+            }
+        }
+
         void GetEmptyLeaves(OctreeNode octreeNode)
         {
             if (octreeNode.isLeaf
              && octreeNode.objects.Count == 0)
             {
                 _emptyLeaves.Add(octreeNode);
-                _aStarGraph.AddNode(octreeNode);
+                _flowFieldGraph.AddNode(octreeNode);
 
                 return;
             }
@@ -107,14 +194,6 @@ namespace Octrees
             {
                 GetEmptyLeaves(octreeNodeChild);
             }
-
-            /*for (int i = 0; i < octreeNode.children.Length; i++)
-            {
-                for (int j = i + 1; j < octreeNode.children.Length; j++)
-                {
-                    _aStarGraph.AddEdge(octreeNode.children[i], octreeNode.children[j]);
-                }
-            }*/
         }
 
         void CreateTree(ref NativeArray<float3> collisionPositions, float minNodeSize)
@@ -126,6 +205,14 @@ namespace Octrees
                 _root.Divide(collisionPosition);
             }
         }
+
+        /*public void AddObstacles(ref NativeArray<float3> newCollisionPositions)
+        {
+            foreach (float3 position in newCollisionPositions)
+            {
+                AddPosition(position);
+            }
+        }*/
 
         void CalculateBounds(ref NativeArray<float3> collisionPositions)
         {

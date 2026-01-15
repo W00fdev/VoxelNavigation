@@ -17,6 +17,9 @@ namespace Tools
             if (GUILayout.Button("Показать вершины графа пути"))
                 GizmosTools.ShowGraphNodes = !GizmosTools.ShowGraphNodes;
             
+            if (GUILayout.Button("Показать flow fields"))
+                GizmosTools.ShowFlowFields = !GizmosTools.ShowFlowFields;
+
             if (GUILayout.Button("Показать последний путь"))
                 GizmosTools.ShowLastPathGraphNodes = !GizmosTools.ShowLastPathGraphNodes;
 

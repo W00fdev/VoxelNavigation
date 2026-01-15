@@ -55,6 +55,11 @@ namespace Map
 
         void OnDestroy()
         {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
             _drawArgsBuffer?.Release();
             _dataBuffer?.Release();
         }

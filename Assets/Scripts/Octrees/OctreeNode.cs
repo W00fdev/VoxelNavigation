@@ -63,6 +63,42 @@ namespace Octrees
             Divide(new OctreeObject(collisionPosition));
         }
 
+        public void Divide(OctreeObject octreeObject, ref HashSet<OctreeNode> addedNodes)
+        {
+            // 1) -> если существует ребенок, который пересекает -> он уже был взят как leaf 
+            // 2) этот ребенок внутри себя дожен создать объект и записаться при создании в HashSet себя
+
+            if (_bounds.size.x <= _minNodeSize)
+            {
+                AddObject(octreeObject);
+                addedNodes.Add(this);
+                return;
+            }
+
+            _children ??= new OctreeNode[8];
+
+            bool intersectsChild = false;
+
+            for (int i = 0; i < 8; i++)
+            {
+                _children[i] ??= new OctreeNode(this, _childBounds[i], _minNodeSize);
+
+                if (octreeObject.Intersects(_childBounds[i]))
+                {
+                    _children[i]
+                       .Divide(octreeObject);
+
+                    intersectsChild = true;
+                }
+            }
+
+            if (!intersectsChild)
+            {
+                AddObject(octreeObject);
+                addedNodes.Add(this);
+            }
+        }
+
         void Divide(OctreeObject octreeObject)
         {
             if (_bounds.size.x <= _minNodeSize)
